@@ -5,6 +5,8 @@ project:
 website:
   title: "Noor de Bruijn"
   navbar:
+    background: "#F5F5F5"
+    foreground: "#343A40"
     left:
       - href: index.qmd
         text: Home

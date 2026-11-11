@@ -5,9 +5,9 @@ toc: false
 
 ## About me
 
-I am a senior data and analytics consultant based in Melbourne. I recently completed my PhD research at the University of Melbourne, where I applied natural language processing (NLP) to large-scale workplace text data. I also ran my own research and analytics firm for six years, working with clients in media, market research and e-commerce. My strengths: technical depth, practical problem-solving, and clear communication.
+I am a data scientist and consultant based in Melbourne. I recently completed my PhD research at the University of Melbourne, where I applied natural language processing (NLP) to large-scale workplace text data. I also ran my own research and analytics firm for six years, working with clients in media, market research and e-commerce. My strengths: technical depth, practical problem-solving, and clear communication.
 
-## Tools & technologies
+## Tools & Technologies
 
 - **Languages:** Python, SQL, R, Bash
 - **Data analysis & modelling:** pandas, NumPy, statsmodels

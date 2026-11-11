@@ -1,0 +1,6 @@
+---
+title: "Melbourne’s Food Scene: Who Stays Open?"
+#subtitle: "Personal project"
+description: "Twenty years of City of Melbourne data on cafés and restaurants, analysed to show where a food delivery platform should grow."
+categories: [Geospatial analysis, SQL, Survival analysis, LLMs]
+---

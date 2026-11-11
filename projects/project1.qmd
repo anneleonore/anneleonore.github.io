@@ -1,0 +1,7 @@
+---
+title: "Performance Reviews at Scale with NLP"
+subtitle: "Research collaboration"
+description: "Applying NLP to 2M+ performance feedback records, in collaboration with Culture Amp."
+categories: [NLP, Python, People Analytics]
+image: ../images/culture-amp.png
+---

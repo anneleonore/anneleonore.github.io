@@ -1,0 +1,67 @@
+---
+title: "Gendered language in performance feedback"
+subtitle: "Research collaboration with Culture Amp"
+description: "Applying NLP to large-scale performance feedback to show how manager and employee gender shape the language of workplace evaluations."
+categories: [NLP, People analytics, Python, Mixed-effects models]
+---
+
+## Overview
+
+Performance feedback shapes pay, promotion and development, yet research on
+gender bias in feedback mostly relies on small, manually coded samples. I set
+up a research collaboration with Culture Amp to study this question at scale,
+using natural language processing (NLP) on written feedback from organisations
+that use its platform. The work forms the core of my PhD at the University of
+Melbourne.
+
+## The question
+
+Do managers write about women and men differently, and does the manager's own
+gender matter? I examine the content, tone and linguistic style of feedback,
+and the organisational factors, such as team size, that may explain gender
+differences.
+
+## Approach
+
+- **Text processing pipeline:** cleaning, anonymisation and linguistic
+  annotation of feedback texts (spaCy, LLM-based name extraction).
+- **Content:** agentic and communal language measured with sentence embeddings,
+  distinctive vocabulary with weighted log-odds, and themes with topic
+  modelling (NMF, BERTopic).
+- **Tone:** sentiment and emotion classified with transformer models
+  (RoBERTa, GoEmotions), and valence and arousal scored with lexicons.
+- **Style:** hedging, elaboration, lexical diversity and grammatical
+  complexity.
+- **Inference:** mixed-effects and GEE models that account for the clustering
+  of feedback within manager–employee pairs, and mediation analysis for
+  organisational mechanisms.
+
+## Key findings
+
+- **Manager gender often predicts feedback language more strongly than
+  employee gender.** Who writes the feedback matters as much as who receives
+  it.
+- **Female managers write longer, more positive feedback and hedge more**, and
+  hedging is strongest when female managers write about female employees.
+- **Team size helps explain gender differences.** Male managers oversee larger
+  teams, and span of control partly accounts for differences in how managers
+  frame their feedback.
+
+## Why it matters
+
+These findings suggest that efforts to reduce bias in performance reviews
+should look at the people who write feedback, not only at those who receive
+it. They also show how NLP can turn unstructured feedback into evidence that
+organisations can act on, for example in reviewer guidance, calibration
+sessions and DEI reporting.
+
+## My role
+
+I designed the research collaboration, built the full analysis pipeline in
+Python, and led all analyses and write-up, working with supervisors at the
+University of Melbourne and UC Berkeley Haas.
+
+## Tools
+
+Python · spaCy · Hugging Face Transformers · sentence-transformers ·
+statsmodels · BERTopic · AWS · Saturn Cloud

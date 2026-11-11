@@ -1,7 +1,38 @@
 ---
-title: "Noor de Bruijn"
+title: "Noor de Bruijn | Data Scientist"
+pagetitle: "Noor de Bruijn"
+toc: false
+about:
+  template: jolla
+  image: images/profile.jpg
+  links:
+    - icon: linkedin
+      text: LinkedIn
+      href: https://www.linkedin.com/in/anneleonore
+    - icon: github
+      text: GitHub
+      href: https://github.com/anneleonore
+listing:
+  id: selected-projects
+  contents: projects
+  type: grid
+  grid-columns: 2
+  max-items: 4
+  sort: filename
+  fields: [image, title, subtitle, description, categories]
+  image-height: 200px
 ---
 
-This is a Quarto website.
+[Python]{.badge .badge-custom}
+[Applied Machine Learning]{.badge .badge-custom}
+[NLP]{.badge .badge-custom}
+[Statistics]{.badge .badge-custom}
+[SQL]{.badge .badge-custom}
+[People Analytics]{.badge .badge-custom}
 
-To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
+<hr class="section-divider">
+
+## Selected Projects {style="font-size: 2rem; margin-top: 1.5rem; margin-bottom: 1.5rem;"}
+
+::: {#selected-projects .column-page}
+:::
