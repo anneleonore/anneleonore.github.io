@@ -8,10 +8,10 @@ website:
     left:
       - href: index.qmd
         text: Home
-      - href: projects.qmd
-        text: Projects
       - href: about.qmd
         text: About
+      - href: projects.qmd
+        text: Projects
     right:
       - icon: github
         href: https://github.com/anneleonore
