@@ -1,0 +1,25 @@
+project:
+  type: website
+  output-dir: _site
+
+website:
+  title: "Noor de Bruijn"
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+      - href: projects.qmd
+        text: Projects
+      - href: about.qmd
+        text: About
+    right:
+      - icon: github
+        href: https://github.com/anneleonore
+      - icon: linkedin
+        href: https://www.linkedin.com/in/anneleonore
+
+format:
+  html:
+    theme: flatly
+    css: styles.css
+    toc: true
