@@ -1,9 +1,647 @@
 ---
 title: "Melbourne's Food Scene: Who Stays Open?"
-#subtitle: "Personal project"
-description: "An interactive dashboard of twenty years of City of Melbourne census data, showing where cafés and restaurants open, close and survive."
+subtitle: "Interactive dashboard"
+description: "An interactive dashboard of twenty years of City of Melbourne census data, showing where cafés and restaurants with seating open, close and survive."
 categories: [Interactive dashboard, Geospatial analysis, Survival analysis, Python]
 image: ../images/melbourne-restaurants.png
+jupyter: portfolio
+format:
+  dashboard:
+    orientation: rows
+    scrolling: true
+    css: ../styles.css
+execute:
+  echo: false
+  warning: false
 ---
 
-[Open the interactive dashboard →](../dashboards/melbourne-food.qmd)
+```{python}
+#| include: false
+import pandas as pd
+import plotly.express as px
+
+BLUE = "#1976D2"
+
+# ---------------------------------------------------------------------------
+# Load and clean the data (every column is stored as text)
+# ---------------------------------------------------------------------------
+raw = pd.read_csv("../data/melbourne-venues.csv")
+for col in ["census_year", "number_of_seats", "latitude", "longitude"]:
+    raw[col] = pd.to_numeric(raw[col], errors="coerce")
+raw = raw.dropna(subset=["census_year"])
+raw["census_year"] = raw["census_year"].astype(int)
+raw["number_of_seats"] = raw["number_of_seats"].fillna(0)
+raw["seat_type"] = raw["seating_type"].fillna("").str.contains("outdoor", case=False).map(
+    {True: "Outdoor", False: "Indoor"}
+)
+
+# One row per venue per year (a venue can have indoor and outdoor rows)
+venues = (
+    raw.groupby(["census_year", "property_id", "trading_name"], as_index=False)
+        .agg(
+        area=("clue_small_area", "first"),
+        latitude=("latitude", "first"),
+        longitude=("longitude", "first"),
+        seats=("number_of_seats", "sum"),
+        industry=("industry_anzsic4_description", "first"),
+    )
+)
+
+# Simplify area names: merge the two West Melbourne areas
+venues["area"] = venues["area"].replace({
+    "West Melbourne (Residential)": "West Melbourne",
+    "West Melbourne (Industrial)": "West Melbourne",
+    "Melbourne (Remainder)": "Melbourne (outside CBD)",
+})
+
+venues = venues[venues["area"] != "South Yarra"]   # no mappable venues in this area
+
+# Group the 73 ANZSIC industry categories into interpretable venue types
+TYPE_GROUPS = {
+    "Restaurants": [
+        "Cafes and Restaurants",
+    ],
+    "Takeaway": [
+        "Takeaway Food Services", "Catering Services",
+    ],
+    "Bars": [
+        "Pubs, Taverns and Bars", "Clubs (Hospitality)",
+    ],
+    "Hotels": [
+        "Accommodation",
+    ],
+    "Food shops": [
+        "Bakery Product Manufacturing (Non-factory based)",
+        "Other Specialised Food Retailing", "Supermarket and Grocery Stores",
+        "Convenience Store", "Fruit and Vegetable Retailing",
+        "Fresh Meat, Fish and Poultry Retailing", "Liquor Retailing",
+        "Other Food Product Manufacturing n.e.c.", "Cereal, Pasta and Baking Mix Manufacturing",
+        "Fruit and Vegetable Wholesaling",
+    ],
+    "Entertainment, sport & culture": [
+        "Sports and Physical Recreation Venues, Grounds and Facilities Operation",
+        "Performing Arts Venue Operation", "Performing Arts Operation",
+        "Other Gambling Activities", "Casino Operation",
+        "Zoological and Botanical Gardens Operation",
+        "Amusement and Other Recreational Activities n.e.c.", "Amusement Parks and Centres Operation",
+        "Health and Fitness Centres and Gymnasia Operation",
+        "Sports and Physical Recreation Clubs and Sports Professionals",
+        "Sports and Physical Recreation Instruction",
+        "Horse and Dog Racing Administration and Track Operation",
+        "Museum Operation", "Motion Picture Exhibition",
+    ],
+}
+# Turn the groups into a lookup: category -> type; anything not listed becomes "Other"
+TYPE_OF = {cat: group for group, cats in TYPE_GROUPS.items() for cat in cats}
+venues["type"] = venues["industry"].map(TYPE_OF).fillna("Other")
+
+first_year = venues["census_year"].min()
+latest_year = venues["census_year"].max()
+latest = venues[venues["census_year"] == latest_year]
+first = venues[venues["census_year"] == first_year]
+
+n_latest = len(latest)
+n_first = len(first)
+change_n = n_latest - n_first
+change_pct = change_n / n_first * 100
+
+seats_latest = raw.loc[raw["census_year"] == latest_year]
+total_seats = seats_latest["number_of_seats"].sum()
+outdoor_share = (
+    seats_latest.loc[seats_latest["seat_type"] == "Outdoor", "number_of_seats"].sum()
+    / total_seats * 100
+)
+indoor_share = 100 - outdoor_share
+
+# Survival: share of venues open 10 years before the latest census that are still open
+years = sorted(venues["census_year"].unique())
+base_year = max(y for y in years if y <= latest_year - 10)
+key = ["property_id", "trading_name"]
+base_keys = set(map(tuple, venues.loc[venues["census_year"] == base_year, key].values))
+latest_keys = set(map(tuple, latest[key].values))
+survival_pct = len(base_keys & latest_keys) / len(base_keys) * 100
+
+# Fastest-growing area since the first census (areas with at least 20 venues at the start)
+counts = venues.groupby(["area", "census_year"]).size().unstack()
+start, end = counts[first_year], counts[latest_year]
+growth = ((end - start) / start * 100)[start >= 20].dropna()
+fastest_area, fastest_growth = growth.idxmax(), growth.max()
+
+# Survival of new venues (Kaplan-Meier), in years
+key = ["property_id", "trading_name"]
+spells = venues.groupby(key)["census_year"].agg(["min", "max"]).reset_index()
+spells = spells[spells["min"] > first_year]            # only venues whose opening we observe
+spells["years"] = spells["max"] - spells["min"] + 1    # years seen open
+spells["closed"] = spells["max"] < latest_year         # still open in the latest census = not closed yet
+
+survival = 1.0
+median_lifespan = None
+survival_5 = None
+for d in sorted(spells["years"].unique()):
+    at_risk = (spells["years"] >= d).sum()
+    closed_now = ((spells["years"] == d) & spells["closed"]).sum()
+    survival *= 1 - closed_now / at_risk
+    if d <= 5:
+        survival_5 = survival                          # share still open after 5 years
+    if median_lifespan is None and survival <= 0.5:
+        median_lifespan = d                            # half of new venues have closed by now
+
+# Share of today's venues in the CBD
+cbd_share = (latest["area"] == "Melbourne (CBD)").mean() * 100
+
+# Share of today's venues that opened in the last 5 years
+key = ["property_id", "trading_name"]
+first_seen = venues.groupby(key)["census_year"].min()
+latest_first_seen = latest.set_index(key).index.map(first_seen)
+new_share = (latest_first_seen > latest_year - 5).mean() * 100     
+
+def style(fig):
+    """Shared clean styling for all charts."""
+    fig.update_layout(
+        template="simple_white",
+        margin=dict(l=50, r=20, t=20, b=50),     # a bit more room for larger axis text
+        legend=dict(
+            orientation="v",                      # one item per line
+            yanchor="top", y=0.98,                # top-left corner, inside the chart
+            xanchor="left", x=0.02,
+            bgcolor="rgba(255,255,255,0.85)",     # white background so lines stay readable
+            title_text="",
+            font=dict(size=11),
+        ),
+        font=dict(size=13),
+    )
+    fig.update_xaxes(
+        title_font=dict(size=18),                 # x-axis title, e.g. "Census year"
+        tickfont=dict(size=14),                   # x-axis tick labels, e.g. 2010
+    )
+    fig.update_yaxes(
+        title_font=dict(size=18),                 # y-axis title, e.g. "Venues"
+        tickfont=dict(size=14),                   # y-axis tick labels
+    )
+    return fig
+
+def area_chart(include_cbd=True):
+    """Venues per year by area; optionally without the CBD."""
+    data = venues if include_cbd else venues[venues["area"] != "Melbourne (CBD)"]
+    by_area = data.groupby(["census_year", "area"]).size().reset_index(name="venues")
+
+    # Order areas by their average number of venues (highest first),
+    # so the hover box lists the busiest area at the top
+    area_order = by_area.groupby("area")["venues"].mean().sort_values(ascending=False).index.tolist()
+
+    fig = px.line(
+        by_area, x="census_year", y="venues", color="area",
+        category_orders={"area": area_order},
+        labels={"census_year": "Census year", "venues": "Number of venues", "area": "Area"},
+    )
+    style(fig)
+    fig.update_layout(
+        showlegend=False,          # no legend: names appear when you hover
+        hovermode="x unified",     # one box listing all areas for the year
+        hoverlabel=dict(font_size=14),
+    )
+    fig.update_traces(
+        line=dict(width=2.5),   # thicker lines (default is 2)
+        hovertemplate="<b>%{fullData.name}</b>: %{y}<extra></extra>",
+    )
+
+    return fig
+```
+
+## Headline numbers {height=180px}
+
+```{python}
+#| content: valuebox
+#| title: "Venues added since 2002"
+dict(icon="graph-up-arrow", color="primary", value=f"{change_n:+,} ({change_pct:+.0f}%)")
+```
+
+```{python}
+#| content: valuebox
+#| title: "Fastest growth since 2002"
+dict(icon="geo-alt", color="primary", value=f"{fastest_area} (+{fastest_growth:.0f}%)")
+```
+
+```{python}
+#| content: valuebox
+#| title: "Median venue lifespan"
+dict(icon="hourglass-split", color="primary", value=f"{median_lifespan} years")
+```
+
+```{python}
+#| content: valuebox
+#| title: "Venues in the CBD"
+dict(icon="buildings", color="primary", value=f"{cbd_share:.0f}%")
+```
+
+## Trends {height=500px}
+
+::: {.card .spacer width="10%"}
+:::
+
+```{python}
+#| title: "Number of venues by area (2002–2024)"
+#| width: 45%
+from IPython.display import HTML
+
+fig = area_chart(include_cbd=True)
+_ = fig.update_traces(hoverinfo="none", hovertemplate=None)   # we draw our own hover box below
+chart_html = fig.to_html(
+    full_html=False, include_plotlyjs="cdn", div_id="area-chart",
+    default_height="100%", default_width="100%",
+    config={"responsive": True, "displayModeBar": False},
+)
+
+# A regular web-page button that hides/shows the CBD line,
+# plus our own hover box that sorts the areas by their value in the hovered year
+HTML(f"""
+<div class="area-chart-wrap">
+  <button class="cbd-toggle" onclick="toggleCBD(this)">Hide CBD</button>
+  <div class="area-chart-plot" style="position:relative;">
+    {chart_html}
+    <div id="area-hover" style="position:absolute; display:none; pointer-events:none; z-index:10;
+         background:white; border:1px solid #DDDDDD; border-radius:4px; padding:6px 8px;
+         box-shadow:0 1px 4px rgba(0,0,0,0.15); line-height:1.35; white-space:nowrap;"></div>
+  </div>
+</div>
+<script>
+function toggleCBD(btn) {{
+  var gd = document.getElementById("area-chart");
+  var idx = [];
+  gd.data.forEach(function (t, i) {{ if (t.name === "Melbourne (CBD)") idx.push(i); }});
+  var hide = btn.dataset.hidden !== "1";
+  Plotly.restyle(gd, {{visible: !hide}}, idx);
+  Plotly.relayout(gd, {{"yaxis.autorange": true}});
+  btn.dataset.hidden = hide ? "1" : "0";
+  btn.textContent = hide ? "Show CBD" : "Hide CBD";
+}}
+
+(function () {{
+  var gd = document.getElementById("area-chart");
+  var box = document.getElementById("area-hover");
+
+  function attach() {{
+    if (!gd.on) {{ return setTimeout(attach, 100); }}
+
+    gd.on("plotly_hover", function (ev) {{
+      // Sort the areas from highest to lowest value in this year
+      var pts = ev.points.filter(function (p) {{ return p.data.visible !== false; }})
+                         .sort(function (a, b) {{ return b.y - a.y; }});
+      if (!pts.length) return;
+      var cw = gd.offsetWidth;
+      box.style.fontSize = (cw < 380 ? 10 : (cw < 520 ? 11 : 13)) + "px";
+      box.innerHTML = "<b>" + pts[0].x + "</b><br>" + pts.map(function (p) {{
+        return '<span style="color:' + p.data.line.color + '">&#9644;</span> <b>' +
+               p.data.name + "</b>: " + p.y.toLocaleString();
+      }}).join("<br>");
+
+      // Place the box next to the hovered year, on whichever side has room
+      var px = gd._fullLayout.xaxis.l2p(pts[0].x) + gd._fullLayout._size.l;
+      box.style.display = "block";
+      var left = px + 12;
+      if (left + box.offsetWidth > cw) left = px - 12 - box.offsetWidth;
+      box.style.left = Math.max(0, left) + "px";
+      box.style.top = gd._fullLayout._size.t + "px";
+    }});
+    gd.on("plotly_unhover", function () {{ box.style.display = "none"; }});
+  }}
+  attach();
+}})();
+</script>
+""")
+```
+
+```{python}
+#| title: "Open venues by area and type (2024)"
+#| width: 45%
+import numpy as np
+import plotly.graph_objects as go
+
+# 1. How many venues of each type are open in each area (latest census)
+now = venues[venues["census_year"] == latest_year]
+counts = now.groupby(["area", "type"]).size().unstack(fill_value=0)
+counts = counts.drop(columns=["Other", "Entertainment, sport & culture"], errors="ignore")   # leave out less informative groups
+
+# 2. Five-year survival of new venues for each area and type (Kaplan-Meier)
+key = ["property_id", "trading_name"]
+first_rows = venues.sort_values("census_year").groupby(key).first().reset_index()
+spells_h = venues.groupby(key)["census_year"].agg(["min", "max"]).reset_index()
+spells_h = spells_h.merge(first_rows[key + ["area", "type"]], on=key)   # area and type in the opening year
+spells_h = spells_h[spells_h["min"] > first_year]                         # only venues whose opening we observe
+spells_h["years"] = spells_h["max"] - spells_h["min"] + 1
+spells_h["closed"] = spells_h["max"] < latest_year
+
+def survival_at(d, horizon=5):
+    """Kaplan-Meier estimate of the share still open after `horizon` years."""
+    s = 1.0
+    for t in sorted(d["years"].unique()):
+        if t > horizon:
+            break
+        at_risk = (d["years"] >= t).sum()
+        closed_now = ((d["years"] == t) & d["closed"]).sum()
+        s *= 1 - closed_now / at_risk
+    return s * 100
+
+surv = {
+    (a, t): (survival_at(d), len(d))
+    for (a, t), d in spells_h.groupby(["area", "type"])
+}
+
+# Order: busiest areas at the top, most common types on the left
+area_order = counts.sum(axis=1).sort_values(ascending=False).index.tolist()
+type_order = counts.sum(axis=0).sort_values(ascending=False).index.tolist()
+counts = counts.loc[area_order, type_order]
+
+# Short column labels (the full name still shows in the hover box)
+SHORT = {
+    "Cafés & restaurants": "Cafés &<br>restaurants",
+    "Takeaway & catering": "Takeaway &<br>catering",
+    "Pubs, bars & clubs": "Pubs &<br>bars",
+    "Accommodation": "Hotels",
+    "Bakeries & food shops": "Bakeries &<br>food shops",
+    "Entertainment, sport & culture": "Leisure",
+    "Other": "Other",
+}
+
+# Hover text: number open now, plus 5-year survival where there are enough new venues
+hover = [
+    [
+        f"<b>{t}</b> in <b>{a}</b><br>Open in {latest_year}: {counts.loc[a, t]:,}"
+        + (
+            f"<br>Still open after 5 years: {surv[(a, t)][0]:.0f}% (of {surv[(a, t)][1]:,} new venues)"
+            if (a, t) in surv and surv[(a, t)][1] >= 20 else ""
+        )
+        for t in type_order
+    ]
+    for a in area_order
+]
+
+fig = go.Figure(go.Heatmap(
+    z=np.log1p(counts.values),            # log scale for colour, so smaller areas still show shades
+    x=type_order, y=area_order,
+    text=counts.values, texttemplate="%{text}",
+    textfont=dict(size=12),
+    customdata=hover, hovertemplate="%{customdata}<extra></extra>",
+    colorscale=[[0, "#FFFFFF"], [1, BLUE]], showscale=False,
+    xgap=2, ygap=2,
+))
+_ = style(fig)
+_ = fig.update_layout(hoverlabel=dict(font_size=13), margin=dict(l=10, r=10, t=10, b=10))
+_ = fig.update_xaxes(
+    side="top", tickangle=0,
+    tickvals=type_order, ticktext=[SHORT.get(t, t) for t in type_order],
+    tickfont=dict(size=13), showline=False, automargin=True,
+    ticks="outside", ticklen=6, tickcolor="rgba(0,0,0,0)",
+)
+_ = fig.update_yaxes(
+    autorange="reversed", tickfont=dict(size=12), showline=False,
+    ticks="outside", ticklen=6, tickcolor="rgba(0,0,0,0)",
+)
+fig.show(config={"displayModeBar": False})
+```
+
+::: {.card .spacer width="10%"}
+:::
+
+## Map {height=480px}
+
+::: {.card .spacer width="10%"}
+:::
+
+```{python}
+#| title: "Open and closed venues by area (2002–2024)"
+#| width: 50%
+import folium
+from folium.plugins import Fullscreen
+from branca.element import MacroElement
+from jinja2 import Template
+
+OPEN_COLOUR = "#D62828"     # teal: still open
+CLOSED_COLOUR = "#9E9E9E"   # neutral grey: closed
+
+# One row per venue across all census years: when it was first and last seen
+key = ["property_id", "trading_name"]
+history = (
+    venues.sort_values("census_year")
+    .groupby(key)
+    .agg(
+        first_year=("census_year", "min"),
+        last_year=("census_year", "max"),
+        area=("area", "last"),
+        latitude=("latitude", "last"),
+        longitude=("longitude", "last"),
+        seats=("seats", "last"),
+    )
+    .reset_index()
+    .dropna(subset=["latitude", "longitude"])
+)
+history["is_open"] = history["last_year"] == latest_year
+history["status"] = history.apply(
+    lambda r: f"Open in {latest_year}" if r["is_open"] else f"Closed (last seen {int(r['last_year'])})",
+    axis=1,
+)
+history["years"] = history["first_year"].astype(int).astype(str) + "–" + history["last_year"].astype(int).astype(str)
+history["seats"] = history["seats"].astype(int)
+
+def convex_hull(points):
+    """Smallest convex shape around a set of (lon, lat) points (monotone chain)."""
+    pts = sorted(set(points))
+    if len(pts) < 3:
+        return []
+    def cross(o, a, b):
+        return (a[0] - o[0]) * (b[1] - o[1]) - (a[1] - o[1]) * (b[0] - o[0])
+    lower, upper = [], []
+    for p in pts:
+        while len(lower) >= 2 and cross(lower[-2], lower[-1], p) <= 0:
+            lower.pop()
+        lower.append(p)
+    for p in reversed(pts):
+        while len(upper) >= 2 and cross(upper[-2], upper[-1], p) <= 0:
+            upper.pop()
+        upper.append(p)
+    hull = lower[:-1] + upper[:-1]
+    return hull + [hull[0]]
+
+AREA_PALETTE = [
+    "#4E79A7",  # blue
+    "#F28E2B",  # orange
+    "#E15759",  # red
+    "#59A14F",  # green
+    "#EDC948",  # yellow
+    "#7B4FA0",  # purple
+    "#FF8FB1",  # pink
+    "#9C6B3F",  # brown
+    "#B8D433",  # lime
+    "#1F2F7A",  # navy
+    "#7A7A1F",  # olive
+    "#7A1F3D",  # maroon
+]
+
+def area_layer(data):
+    """A coloured, see-through shape around the venues of each area."""
+    features = []
+    for i, (area, d) in enumerate(data.groupby("area")):
+        hull = convex_hull(list(zip(d["longitude"], d["latitude"])))
+        if hull:
+            features.append({
+                "type": "Feature",
+                "geometry": {"type": "Polygon", "coordinates": [hull]},
+                "properties": {"Area": area, "colour": AREA_PALETTE[i % len(AREA_PALETTE)]},
+            })
+    return folium.GeoJson(
+        {"type": "FeatureCollection", "features": features},
+        name="Areas",
+        style_function=lambda f: {
+            "color": f["properties"]["colour"], "weight": 1, "opacity": 0.6,
+            "fillColor": f["properties"]["colour"], "fillOpacity": 0.15,
+        },
+        tooltip=folium.GeoJsonTooltip(fields=["Area"], labels=False, sticky=True),
+    )
+
+def venue_layer(data, name, colour, radius, opacity):
+    """One clickable layer of venues: a circle per venue, popup with details."""
+    features = [
+        {
+            "type": "Feature",
+            "geometry": {"type": "Point", "coordinates": [r.longitude, r.latitude]},
+            "properties": {
+                "Venue": r.trading_name, "Area": r.area, "Seats": r.seats,
+                "Status": r.status, "In census": r.years,
+            },
+        }
+        for r in data.itertuples()
+    ]
+    return folium.GeoJson(
+        {"type": "FeatureCollection", "features": features},
+        name=name,
+        marker=folium.CircleMarker(radius=radius, weight=0, fill=True, fill_opacity=opacity),
+        style_function=lambda f, c=colour: {"fillColor": c, "color": c},
+        tooltip=folium.GeoJsonTooltip(fields=["Venue"], labels=False),
+        popup=folium.GeoJsonPopup(fields=["Venue", "Area", "Seats", "Status", "In census"]),
+    )
+
+m = folium.Map(
+    location=[-37.8136, 144.9631], zoom_start=14,
+    tiles=None, prefer_canvas=True, control_scale=True,
+    width="100%", height="100%",
+)
+_ = folium.TileLayer(
+    tiles="https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}",
+    attr="Tiles © Esri — Esri, HERE, Garmin, © OpenStreetMap contributors",
+    name="Light grey map", max_native_zoom=16, max_zoom=19,
+).add_to(m)
+_ = folium.TileLayer("OpenStreetMap", name="Street map").add_to(m)
+
+# Layers are drawn in this order: areas at the bottom, closed venues, then open venues on top
+areas = area_layer(history)
+_ = areas.add_to(m)
+venue_layers = []
+for subset, name, colour, radius, opacity in [
+    (history[~history["is_open"]], "Closed", CLOSED_COLOUR, 3, 0.5),
+    (history[history["is_open"]], f"Open in {latest_year}", OPEN_COLOUR, 4, 0.85),
+]:
+    if len(subset):                       # skip a layer if it has no venues
+        layer = venue_layer(subset, name, colour, radius, opacity)
+        _ = layer.add_to(m)
+        venue_layers.append(layer)
+
+# Hovering over an area (or one of its venues) highlights its venues and fades the rest
+highlight = MacroElement()
+highlight._template = Template("""
+{% macro script(this, kwargs) %}
+(function () {
+    var areas = """ + areas.get_name() + """;
+    var venueLayers = [""" + ", ".join(l.get_name() for l in venue_layers) + """];
+    var current = null, timer = null;
+
+    venueLayers.forEach(function (lyr) {
+        lyr.eachLayer(function (c) {
+            c._base = {r: c.getRadius(), o: c.options.fillOpacity};
+            c.on("mouseover", function () { show(c.feature.properties.Area); });
+            c.on("mouseout", later);
+        });
+    });
+
+    function paint(area) {
+        venueLayers.forEach(function (lyr) {
+            lyr.eachLayer(function (c) {
+                if (area === null) {
+                    c.setRadius(c._base.r); c.setStyle({fillOpacity: c._base.o});
+                } else if (c.feature.properties.Area === area) {
+                    c.setRadius(c._base.r + 2); c.setStyle({fillOpacity: 1});
+                } else {
+                    c.setRadius(c._base.r); c.setStyle({fillOpacity: 0.08});
+                }
+            });
+        });
+            areas.eachLayer(function (p) {
+            var on = p.feature.properties.Area === area;
+            p.setStyle({fillOpacity: on ? 0.45 : 0.15, weight: on ? 3 : 1, opacity: on ? 1 : 0.6});
+        });
+    }
+    function show(area) {
+        clearTimeout(timer);
+        if (area !== current) { current = area; paint(area); }
+    }
+    function later() {
+        clearTimeout(timer);
+        timer = setTimeout(function () { current = null; paint(null); }, 80);
+    }
+    areas.eachLayer(function (p) {
+        p.on("mouseover", function () { show(p.feature.properties.Area); });
+        p.on("mouseout", later);
+    });
+})();
+{% endmacro %}
+""")
+_ = m.add_child(highlight)
+
+_ = folium.LayerControl(collapsed=False).add_to(m)
+_ = Fullscreen().add_to(m)
+
+# Show the map so that it fills the whole card
+from html import escape
+from IPython.display import HTML
+map_html = m.get_root().render()
+HTML(f'<iframe srcdoc="{escape(map_html)}" style="width:100%; height:100%; border:none;"></iframe>')
+```
+
+::: {.card .spacer width="10%"}
+:::
+
+## About {height=600px}
+
+::: {.card .spacer width="10%"}
+:::
+
+::: {.card title="About this dashboard" width="50%"}
+**Data**
+
+- City of Melbourne, Census of Land Use and Employment (CLUE): "Café, restaurant, bistro seats", census years 2002–2024
+- Covers all venues with seating in the City of Melbourne municipality (CBD and inner suburbs)
+
+**Method**
+
+- **Venues:** Each business at a given address is counted once per census year.
+- **Venue types:** Industry codes grouped into broader categories.
+- **Median venue lifespan:** Years until half of the venues opened after 2002 have closed (Kaplan–Meier estimate)
+- **Five-year survival** (venue type chart, on hover): Share of venues still open five years after opening; shown where at least 20 venues opened.
+- **Map:** *open* means present in the 2024 census; area shapes are approximate.
+
+**Limitations**
+
+- City of Melbourne only, not greater Melbourne
+- A venue that changes name or moves counts as a closure plus a new opening, so lifespans are conservative.
+
+**Credits**
+
+Built with Python, pandas, Plotly, Folium and Quarto. Data licensed CC BY (City of Melbourne). Map tiles © Esri and © OpenStreetMap contributors.
+:::
+
+::: {.card .spacer width="10%"}
+:::
+
+## Bottom space {height=100px}
+
+::: {.card .spacer}
+:::

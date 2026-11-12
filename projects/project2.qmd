@@ -2,7 +2,7 @@
 title: "Food Delivery: An AI Agent for Ops Teams"
 #subtitle: "Live demo"
 description: "An AI agent that answers operations questions about 196,000 food deliveries in plain English, using SQL and a delivery-time model as tools."
-categories: [AI agents, LLMs, SQL, Machine learning]
+categories: [AI agents, GenAI & LLMs, SQL, Model evaluation]
 image: ../images/doordash.png
 toc: false
 ---
@@ -15,4 +15,6 @@ This AI agent answers operations questions about 196,000 food deliveries from Do
         style="width:100%; height:850px; border:none; border-radius:12px;"
         loading="lazy" title="Delivery Ops Agent"></iframe>
 
-[Open the agent in a new tab →](https://noor-portfolio-delivery-agent.streamlit.app)
+<span style="font-size: 0.9rem; color: #888;">
+[Full screen](https://noor-portfolio-delivery-agent.streamlit.app) · [Code on GitHub](https://github.com/anneleonore/delivery-agent)
+</span>
