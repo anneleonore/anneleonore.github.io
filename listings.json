@@ -1,15 +1,5 @@
 [
   {
-    "listing": "/projects.html",
-    "items": [
-      "/projects/project5.html",
-      "/projects/project4.html",
-      "/projects/project2.html",
-      "/projects/project3.html",
-      "/projects/project1.html"
-    ]
-  },
-  {
     "listing": "/index.html",
     "items": [
       "/projects/project1.html",
@@ -17,6 +7,16 @@
       "/projects/project3.html",
       "/projects/project4.html",
       "/projects/project5.html"
+    ]
+  },
+  {
+    "listing": "/projects.html",
+    "items": [
+      "/projects/project5.html",
+      "/projects/project4.html",
+      "/projects/project2.html",
+      "/projects/project3.html",
+      "/projects/project1.html"
     ]
   }
 ]

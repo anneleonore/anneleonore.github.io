@@ -1,5 +1,47 @@
 [
   {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Noor de Bruijn | Data Scientist",
+    "section": "",
+    "text": "Python SQL Machine Learning & NLP GenAI & LLMs Statistics & Survey Design Data Visualisation Stakeholder Management People & Customer Insights"
+  },
+  {
+    "objectID": "index.html#selected-projects",
+    "href": "index.html#selected-projects",
+    "title": "Noor de Bruijn | Data Scientist",
+    "section": "Selected Projects",
+    "text": "Selected Projects\n\n\n\n\n\n\n\n\n\n\nPerformance Reviews at Scale with NLP\n\n\nResearch collaboration\n\n\nNLP\nPython\nPeople Analytics\n\n\nApplying NLP to 2M+ performance feedback records, in collaboration with Culture Amp.\n\n\n\n\n\n\n\n\n\n\n\n\nFood Delivery: An AI Agent for Ops Teams\n\n\nAI agents\nLLMs\nSQL\nMachine learning\n\n\nAn AI agent that answers operations questions about food deliveries in plain English, using SQL, a delivery-time model and charts as tools.\n\n\n\n\n\n\n\n\n\n\n\n\nMelbourne’s Food Scene: Who Stays Open?\n\n\nInteractive dashboard\nGeospatial analysis\nSurvival analysis\nPython\n\n\nAn interactive dashboard of twenty years of City of Melbourne census data, showing where cafés and restaurants open, close and survive.\n\n\n\n\n\n\n\n\n\n\n\n\nEmerce 100: Ranking Dutch Digital Agencies\n\n\nMarket research\nCustomer Insights\nNPS\n\n\nFive years of research behind a national ranking of Dutch digital agencies, rated by 20,000+ professionals.\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "projects/project3.html",
+    "href": "projects/project3.html",
+    "title": "Melbourne’s Food Scene: Who Stays Open?",
+    "section": "",
+    "text": "Open the interactive dashboard →"
+  },
+  {
+    "objectID": "projects/project2.html",
+    "href": "projects/project2.html",
+    "title": "Food Delivery: An AI Agent for Ops Teams",
+    "section": "",
+    "text": "This AI agent answers operations questions about 196,000 food deliveries from DoorDash’s publicly available data (early 2015). A language model reads each question and chooses a tool: for questions about past deliveries it writes and runs a SQL query; for questions about a new order it uses a delivery-time model I trained. It then explains the result in plain English."
+  },
+  {
+    "objectID": "projects/project2.html#try-it-yourself",
+    "href": "projects/project2.html#try-it-yourself",
+    "title": "Food Delivery: An AI Agent for Ops Teams",
+    "section": "Try it yourself",
+    "text": "Try it yourself\n\n\nOpen the agent in a new tab →"
+  },
+  {
+    "objectID": "projects.html",
+    "href": "projects.html",
+    "title": "Projects",
+    "section": "",
+    "text": "COVID-19: Why Do People Follow the Rules?\n\n\nLead analyst on a four-country study of 1M+ longitudinal data points, with findings featured in reports by the Dutch public health institute (RIVM).\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nEmerce 100: Ranking Dutch Digital Agencies\n\n\nFive years of research behind a national ranking of Dutch digital agencies, rated by 20,000+ professionals.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nFood Delivery: An AI Agent for Ops Teams\n\n\nAn AI agent that answers operations questions about food deliveries in plain English, using SQL, a delivery-time model and charts as tools.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nMelbourne’s Food Scene: Who Stays Open?\n\n\nAn interactive dashboard of twenty years of City of Melbourne census data, showing where cafés and restaurants open, close and survive.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nPerformance Reviews at Scale with NLP\n\n\nApplying NLP to 2M+ performance feedback records, in collaboration with Culture Amp.\n\n\n\n\n\n\n\n\n\n\nNo matching items"
+  },
+  {
     "objectID": "about.html",
     "href": "about.html",
     "title": "Noor de Bruijn",
@@ -19,33 +61,5 @@
     "title": "Noor de Bruijn",
     "section": "Tools & Technologies",
     "text": "Tools & Technologies\n\nLanguages: Python, SQL, R, Bash\nData analysis & modelling: pandas, NumPy, statsmodels\nMachine learning & NLP: scikit-learn, PyTorch, Hugging Face Transformers, spaCy\nStatistics: experimental design and A/B testing, multilevel and longitudinal models, regression and mediation analysis, SEM\nInfrastructure: Git, AWS, Saturn Cloud (GPU computing)\nVisualisation & reporting: Tableau, Matplotlib, Seaborn, LaTeX"
-  },
-  {
-    "objectID": "projects.html",
-    "href": "projects.html",
-    "title": "Projects",
-    "section": "",
-    "text": "COVID-19: Why Do People Follow the Rules?\n\n\nLead analyst on a four-country study of 1M+ longitudinal data points, with findings featured in reports by the Dutch public health institute (RIVM).\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nEmerce 100: Ranking Dutch Digital Agencies\n\n\nFive years of research behind a national ranking of Dutch digital agencies, rated by 20,000+ professionals.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nFood Delivery: An AI Agent for Ops Teams\n\n\nAn AI agent that answers operations questions about food deliveries in plain English, using SQL, a delivery-time model and charts as tools.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nMelbourne’s Food Scene: Who Stays Open?\n\n\nAn interactive dashboard of twenty years of City of Melbourne census data, showing where cafés and restaurants open, close and survive.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nPerformance Reviews at Scale with NLP\n\n\nApplying NLP to 2M+ performance feedback records, in collaboration with Culture Amp.\n\n\n\n\n\n\n\n\n\n\nNo matching items"
-  },
-  {
-    "objectID": "projects/project3.html",
-    "href": "projects/project3.html",
-    "title": "Melbourne’s Food Scene: Who Stays Open?",
-    "section": "",
-    "text": "Open the interactive dashboard →"
-  },
-  {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Noor de Bruijn | Data Scientist",
-    "section": "",
-    "text": "Python Applied Machine Learning NLP Statistics SQL People Analytics"
-  },
-  {
-    "objectID": "index.html#selected-projects",
-    "href": "index.html#selected-projects",
-    "title": "Noor de Bruijn | Data Scientist",
-    "section": "Selected Projects",
-    "text": "Selected Projects\n\n\n\n\n\n\n\n\n\n\nPerformance Reviews at Scale with NLP\n\n\nResearch collaboration\n\n\nNLP\nPython\nPeople Analytics\n\n\nApplying NLP to 2M+ performance feedback records, in collaboration with Culture Amp.\n\n\n\n\n\n\n\n\n\n\n\n\nFood Delivery: An AI Agent for Ops Teams\n\n\nAI agents\nLLMs\nSQL\nMachine learning\n\n\nAn AI agent that answers operations questions about food deliveries in plain English, using SQL, a delivery-time model and charts as tools.\n\n\n\n\n\n\n\n\n\n\n\n\nMelbourne’s Food Scene: Who Stays Open?\n\n\nInteractive dashboard\nGeospatial analysis\nSurvival analysis\nPython\n\n\nAn interactive dashboard of twenty years of City of Melbourne census data, showing where cafés and restaurants open, close and survive.\n\n\n\n\n\n\n\n\n\n\n\n\nEmerce 100: Ranking Dutch Digital Agencies\n\n\nMarket research\nCustomer Insights\nNPS\n\n\nFive years of research behind a national ranking of Dutch digital agencies, rated by 20,000+ professionals.\n\n\n\n\n\nNo matching items"
   }
 ]
