@@ -5,13 +5,13 @@
 
 /* Less white space above the profile photo */
 main.content {
-  margin-top: 0.5rem !important;   /* space between the navigation bar and the page content */
+  margin-top: 2rem !important;   /* space between the navigation bar and the page content */
   padding-top: 0 !important;
 }
 
 .quarto-about-jolla {
   margin-top: 0 !important;        /* removes extra space above the photo */
-  padding-top: 0 !important;
+  padding-top: 2rem !important;
 }
 
 
@@ -168,4 +168,80 @@ main.content {
   background-color: white;
   padding: 0 !important;
   transform: scale(1.08);          /* 8% larger */
+}
+
+/* DoorDash image: slightly zoomed out */
+.quarto-grid-item img[src*="doordash" i] {
+  object-fit: contain !important;  /* show the whole image */
+  background-color: white;         /* white around the image */
+  padding: 1rem !important;      /* more rem = smaller image */
+}
+
+/* Dashboard: headline boxes */
+.bslib-value-box .value-box-title {
+  font-size: 1.1rem !important;    /* the label: smaller, regular */
+  font-weight: 400 !important;
+}
+
+.bslib-value-box .value-box-value {
+  font-size: 1.5rem !important;    /* the number: larger */
+  font-weight: 700 !important;     /* and bold */
+}
+
+.bslib-value-box .value-box-showcase {
+  font-size: 1.5rem !important;    /* the icon */
+}
+
+
+/* Dashboard: invisible spacer blocks (white space on the sides) */
+.spacer,
+.card.spacer,
+.spacer .card,
+.spacer .card-body {
+  border: none !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.spacer .card-header,
+.spacer .card-footer {
+  display: none !important;   /* hide any header strip */
+}
+
+/* Dashboard: titles above the charts and cards */
+.quarto-dashboard .card-header {
+  font-size: 1.3em !important;     /* larger title text */
+  font-weight: 700 !important;      /* bold */
+  color: #343A40 !important;        /* dark grey, same as project titles */
+  padding: 0.75rem 1rem !important; /* a bit more space around the title */
+}
+
+/* Dashboard: area chart with Hide/Show CBD button */
+.area-chart-wrap {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.area-chart-plot {
+  flex: 1;
+  min-height: 0;
+}
+
+.cbd-toggle {
+  align-self: flex-start;         /* button as wide as its text, aligned left */
+  margin: 0 0 0.5rem 0;
+  padding: 0.5rem 0.9rem;
+  border: 1px solid #DEE2E6;
+  border-radius: 6px;
+  background: white;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #343A40;
+  cursor: pointer;
+}
+
+.cbd-toggle:hover {
+  border-color: #1976D2;
+  color: #1976D2;
 }
