@@ -1,9 +1,10 @@
 ---
 title: "Food Delivery: An AI Agent for Ops Teams"
-#subtitle: "Personal project"
-description: "An AI agent that answers operations questions about food deliveries in plain English, using SQL, a delivery-time model and charts as tools."
+#subtitle: "Live demo"
+description: "An AI agent that answers operations questions about 196,000 food deliveries in plain English, using SQL and a delivery-time model as tools."
 categories: [AI agents, LLMs, SQL, Machine learning]
 image: ../images/doordash.png
+toc: false
 ---
 
 This AI agent answers operations questions about 196,000 food deliveries from DoorDash’s publicly available data (early 2015). A language model reads each question and chooses a tool: for questions about past deliveries it writes and runs a SQL query; for questions about a new order it uses a delivery-time model I trained. It then explains the result in plain English.
