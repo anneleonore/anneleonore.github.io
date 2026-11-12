@@ -24,11 +24,13 @@ listing:
 ---
 
 [Python]{.badge .badge-custom}
-[Applied Machine Learning]{.badge .badge-custom}
-[NLP]{.badge .badge-custom}
-[Statistics]{.badge .badge-custom}
 [SQL]{.badge .badge-custom}
-[People Analytics]{.badge .badge-custom}
+[Machine Learning & NLP]{.badge .badge-custom}
+[GenAI & LLMs]{.badge .badge-custom}
+[Statistics & Survey Design]{.badge .badge-custom}<br>
+[Data Visualisation]{.badge .badge-custom}
+[Stakeholder Management]{.badge .badge-custom}
+[People & Customer Insights]{.badge .badge-custom}
 
 <hr class="section-divider">
 
