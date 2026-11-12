@@ -1,7 +1,7 @@
 ---
-title: "Emerce 100: Ranking Dutch Digital Agencies"
-#subtitle: "Consulting project"
-description: "Five years of research behind a national ranking of Dutch digital agencies, rated by 20,000+ professionals."
-categories: [Market research, Customer Insights, NPS]
-image: ../images/emerce.png
+title: "Food Delivery: An AI Agent for Ops Teams"
+#subtitle: "Personal project"
+description: "An AI agent that answers operations questions about food deliveries in plain English, using SQL, a delivery-time model and charts as tools."
+categories: [AI agents, LLMs, SQL, Machine learning]
+image: ../images/doordash.png
 ---

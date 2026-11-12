@@ -1,7 +1,8 @@
 ---
-title: "COVID-19: Why Do People Follow the Rules?"
-#subtitle: "Research project"
-description: "Lead analyst on a four-country study of 1M+ longitudinal data points, with findings featured in reports by the Dutch public health institute (RIVM)."
-categories: [Public health, Behavioural science, Longitudinal analysis]
-image: ../images/corona.png
+title: "Emerce 100: Ranking Dutch Digital Agencies"
+#subtitle: "Consulting project"
+description: "Five years of research behind a national ranking of Dutch digital agencies, rated by 20,000+ professionals."
+categories: [Market research, Customer Insights, NPS]
+image: ../images/emerce.png
 ---
+
