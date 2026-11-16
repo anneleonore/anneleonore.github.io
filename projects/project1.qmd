@@ -2,6 +2,6 @@
 title: "Performance Reviews at Scale with NLP"
 subtitle: "Research collaboration"
 description: "My PhD research with Culture Amp: Using NLP to compare 2M+ performance feedback records by gender."
-categories: [NLP, Machine Learning, Text Analytics, People Analytics]
+categories: [NLP, ML, Text Analytics, People Analytics]
 image: ../images/culture-amp.png
 ---
