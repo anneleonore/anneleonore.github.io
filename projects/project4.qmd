@@ -1,8 +1,20 @@
 ---
-title: "Emerce 100: Ranking Dutch Digital Agencies"
-#subtitle: "Consulting project"
-description: "Five years of research behind a national ranking of Dutch digital agencies, rated by 20,000+ professionals."
-categories: [Market research, Customer Insights, NPS]
-image: ../images/emerce.png
+title: "Food Delivery: An AI Agent for Ops Teams"
+subtitle: "Interactive AI agent"
+description: "An AI agent that answers operations questions about 196,000 food deliveries in plain English, using SQL and a delivery-time model as tools."
+categories: [AI agents, GenAI & LLMs, SQL, Model evaluation]
+image: ../images/doordash.png
+toc: false
 ---
 
+This AI agent answers operations questions about 196,000 food deliveries from DoorDash’s publicly available data (early 2015). A language model reads each question and chooses a tool: for questions about past deliveries it writes and runs a SQL query; for questions about a new order it uses a delivery-time model I trained. It then explains the result in plain English.
+
+## Try it yourself
+
+<iframe src="https://noor-portfolio-delivery-agent.streamlit.app/?embed=true"
+        style="width:100%; height:850px; border:none; border-radius:12px;"
+        loading="lazy" title="Delivery Ops Agent"></iframe>
+
+<span style="font-size: 0.9rem; color: #888;">
+[Full screen](https://noor-portfolio-delivery-agent.streamlit.app) · [Code on GitHub](https://github.com/anneleonore/delivery-agent)
+</span>

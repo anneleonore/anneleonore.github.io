@@ -1,0 +1,7 @@
+---
+title: "COVID-19: Why Do People Follow the Rules?"
+#subtitle: "Research project"
+description: "Lead analyst on a four-country study of 1M+ longitudinal data points, with findings featured in reports by the Dutch public health institute (RIVM)."
+categories: [Public health, Behavioural science, Longitudinal analysis]
+image: ../images/corona.png
+---
