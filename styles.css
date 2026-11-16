@@ -113,6 +113,7 @@ main.content {
   border-radius: 6px;                   /* rounded corners */
 }
 
+
 /* Text area below the image */
 .quarto-grid-item .card-body {
   padding: 1.5rem;               /* space around title, description and tags */
@@ -175,6 +176,13 @@ main.content {
   object-fit: contain !important;  /* show the whole image */
   background-color: white;         /* white around the image */
   padding: 1rem !important;      /* more rem = smaller image */
+}
+
+/* ClinicalTrials image: slightly zoomed out */
+.quarto-grid-item img[src*="clinical-trials" i] {
+  object-fit: contain !important;  /* show the whole image */
+  background-color: white;         /* white around the image */
+  padding: 0.5rem !important;      /* more rem = smaller image */
 }
 
 /* Dashboard: headline boxes */

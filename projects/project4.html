@@ -6,9 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="description" content="Five years of research behind a national ranking of Dutch digital agencies, rated by 20,000+ professionals.">
+<meta name="description" content="An AI agent that answers operations questions about 196,000 food deliveries in plain English, using SQL and a delivery-time model as tools.">
 
-<title>Emerce 100: Ranking Dutch Digital Agencies – Noor de Bruijn</title>
+<title>Food Delivery: An AI Agent for Ops Teams – Noor de Bruijn</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -80,7 +80,7 @@ ul.task-list li input[type="checkbox"] {
 <link rel="stylesheet" href="../styles.css">
 </head>
 
-<body class="nav-fixed quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Skip to main content</a>
+<body class="nav-fixed fullcontent quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Skip to main content</a>
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -132,25 +132,25 @@ ul.task-list li input[type="checkbox"] {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
-    </div>
+    
 <!-- main -->
 <main class="content" id="quarto-document-content" tabindex="-1">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Emerce 100: Ranking Dutch Digital Agencies</h1>
+<h1 class="title">Food Delivery: An AI Agent for Ops Teams</h1>
+<p class="subtitle lead">Interactive AI agent</p>
   <div class="quarto-categories">
-    <div class="quarto-category">Market research</div>
-    <div class="quarto-category">Customer Insights</div>
-    <div class="quarto-category">NPS</div>
+    <div class="quarto-category">AI agents</div>
+    <div class="quarto-category">GenAI &amp; LLMs</div>
+    <div class="quarto-category">SQL</div>
+    <div class="quarto-category">Model evaluation</div>
   </div>
   </div>
 
 <div>
   <div class="description">
-    Five years of research behind a national ranking of Dutch digital agencies, rated by 20,000+ professionals.
+    An AI agent that answers operations questions about 196,000 food deliveries in plain English, using SQL and a delivery-time model as tools.
   </div>
 </div>
 
@@ -167,8 +167,15 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
+<p>This AI agent answers operations questions about 196,000 food deliveries from DoorDash’s publicly available data (early 2015). A language model reads each question and chooses a tool: for questions about past deliveries it writes and runs a SQL query; for questions about a new order it uses a delivery-time model I trained. It then explains the result in plain English.</p>
+<section id="try-it-yourself" class="level2">
+<h2 class="anchored" data-anchor-id="try-it-yourself">Try it yourself</h2>
+<iframe src="https://noor-portfolio-delivery-agent.streamlit.app/?embed=true" style="width:100%; height:850px; border:none; border-radius:12px;" loading="lazy" title="Delivery Ops Agent">
+</iframe>
+<p><span style="font-size: 0.9rem; color: #888;"> <a href="https://noor-portfolio-delivery-agent.streamlit.app">Full screen</a> · <a href="https://github.com/anneleonore/delivery-agent">Code on GitHub</a> </span></p>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

@@ -25,18 +25,39 @@
     "href": "projects.html",
     "title": "Projects",
     "section": "",
-    "text": "COVID-19: Why Do People Follow the Rules?\n\n\nLead analyst on a four-country study of 1M+ longitudinal data points, with findings featured in reports by the Dutch public health institute (RIVM).\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nEmerce 100: Ranking Dutch Digital Agencies\n\n\nFive years of research behind a national ranking of Dutch digital agencies, rated by 20,000+ professionals.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nFood Delivery: An AI Agent for Ops Teams\n\n\nAn AI agent that answers operations questions about 196,000 food deliveries in plain English, using SQL and a delivery-time model as tools.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nMelbourne’s Food Scene: Who Stays Open?\n\n\nAn interactive dashboard of twenty years of City of Melbourne census data, showing where cafés and restaurants with seating open, close and survive.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nPerformance Reviews at Scale with NLP\n\n\nApplying NLP to 2M+ performance feedback records, in collaboration with Culture Amp.\n\n\n\n\n\n\n\n\n\n\nNo matching items"
+    "text": "AI Research Assistant for Clinical Trials\n\n\nA retrieval-augmented generation (RAG) system that answers questions about 12,000+ clinical trials in Australia, using ClinicalTrials.gov data.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nCOVID-19: Why Do People Follow the Rules?\n\n\nLead analyst on a four-country study of 1M+ longitudinal data points, with findings featured in reports by the Dutch public health institute (RIVM).\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nEmerce 100: Ranking Dutch Digital Agencies\n\n\nFive years of research behind a national ranking of Dutch digital agencies, rated by 20,000+ professionals.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nFood Delivery: An AI Agent for Ops Teams\n\n\nAn AI agent that answers operations questions about 196,000 food deliveries in plain English, using SQL and a delivery-time model as tools.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nMelbourne’s Food Scene: Who Stays Open?\n\n\nAn interactive dashboard of twenty years of City of Melbourne census data, showing where cafés and restaurants with seating open, close and survive.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nPerformance Reviews at Scale with NLP\n\n\nApplying NLP to 2M+ performance feedback records, in collaboration with Culture Amp.\n\n\n\n\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "projects/project2.html",
     "href": "projects/project2.html",
+    "title": "AI Research Assistant for Clinical Trials",
+    "section": "",
+    "text": "Full screen · Code on GitHub"
+  },
+  {
+    "objectID": "projects/project2.html#try-it-yourself",
+    "href": "projects/project2.html#try-it-yourself",
+    "title": "AI Research Assistant for Clinical Trials",
+    "section": "",
+    "text": "Full screen · Code on GitHub"
+  },
+  {
+    "objectID": "projects/project2.html#how-it-works",
+    "href": "projects/project2.html#how-it-works",
+    "title": "AI Research Assistant for Clinical Trials",
+    "section": "How it works",
+    "text": "How it works\nRetrieval-augmented generation (RAG) means a language model first retrieves relevant documents, then generates an answer from them. Here, the documents are 12,000+ clinical trials running in Australia. Each question goes through six steps:\n\nUnderstand the question. A language model turns the question into search terms: diseases, drugs and their other names, and filters such as status or sponsor.\nFind the trials. SQL queries in DuckDB select the matching trials, and embeddings rank them by how close their content is in meaning to the question.\nCount. A SQL query counts which drugs appear across all matching trials.\nWrite. A language model writes a short answer from the top trials and the counts, citing a trial ID for each claim.\nCheck. A separate language model call compares each claim in the answer with the trials it cites, and removes anything they don’t support.\nAnswer. The final answer is presented, with each trial’s phase, status and sponsor taken directly from the trial records."
+  },
+  {
+    "objectID": "projects/project4.html",
+    "href": "projects/project4.html",
     "title": "Food Delivery: An AI Agent for Ops Teams",
     "section": "",
     "text": "This AI agent answers operations questions about 196,000 food deliveries from DoorDash’s publicly available data (early 2015). A language model reads each question and chooses a tool: for questions about past deliveries it writes and runs a SQL query; for questions about a new order it uses a delivery-time model I trained. It then explains the result in plain English."
   },
   {
-    "objectID": "projects/project2.html#try-it-yourself",
-    "href": "projects/project2.html#try-it-yourself",
+    "objectID": "projects/project4.html#try-it-yourself",
+    "href": "projects/project4.html#try-it-yourself",
     "title": "Food Delivery: An AI Agent for Ops Teams",
     "section": "Try it yourself",
     "text": "Try it yourself\n\n\n Full screen · Code on GitHub"
@@ -53,6 +74,6 @@
     "href": "index.html#selected-projects",
     "title": "Noor de Bruijn | Data Scientist",
     "section": "Selected Projects",
-    "text": "Selected Projects\n\n\n\n\n\n\n\n\n\n\nPerformance Reviews at Scale with NLP\n\n\nResearch collaboration\n\n\nNLP\nPython\nPeople Analytics\n\n\nApplying NLP to 2M+ performance feedback records, in collaboration with Culture Amp.\n\n\n\n\n\n\n\n\n\n\n\n\nFood Delivery: An AI Agent for Ops Teams\n\n\nAI agents\nGenAI & LLMs\nSQL\nModel evaluation\n\n\nAn AI agent that answers operations questions about 196,000 food deliveries in plain English, using SQL and a delivery-time model as tools.\n\n\n\n\n\n\n\n\n\n\n\n\nMelbourne’s Food Scene: Who Stays Open?\n\n\nInteractive dashboard\n\n\nInteractive dashboard\nGeospatial analysis\nSurvival analysis\nPython\n\n\nAn interactive dashboard of twenty years of City of Melbourne census data, showing where cafés and restaurants with seating open, close and survive.\n\n\n\n\n\n\n\n\n\n\n\n\nEmerce 100: Ranking Dutch Digital Agencies\n\n\nMarket research\nCustomer Insights\nNPS\n\n\nFive years of research behind a national ranking of Dutch digital agencies, rated by 20,000+ professionals.\n\n\n\n\n\nNo matching items"
+    "text": "Selected Projects\n\n\n\n\n\n\n\n\n\n\nPerformance Reviews at Scale with NLP\n\n\nResearch collaboration\n\n\nNLP\nPython\nPeople Analytics\n\n\nApplying NLP to 2M+ performance feedback records, in collaboration with Culture Amp.\n\n\n\n\n\n\n\n\n\n\n\n\nAI Research Assistant for Clinical Trials\n\n\nInteractive AI assistant\n\n\nRAG\nGenAI & LLMs\nEmbeddings\nSQL\n\n\nA retrieval-augmented generation (RAG) system that answers questions about 12,000+ clinical trials in Australia, using ClinicalTrials.gov data.\n\n\n\n\n\n\n\n\n\n\n\n\nMelbourne’s Food Scene: Who Stays Open?\n\n\nInteractive dashboard\n\n\nInteractive dashboard\nGeospatial analysis\nSurvival analysis\nPython\n\n\nAn interactive dashboard of twenty years of City of Melbourne census data, showing where cafés and restaurants with seating open, close and survive.\n\n\n\n\n\n\n\n\n\n\n\n\nFood Delivery: An AI Agent for Ops Teams\n\n\nInteractive AI agent\n\n\nAI agents\nGenAI & LLMs\nSQL\nModel evaluation\n\n\nAn AI agent that answers operations questions about 196,000 food deliveries in plain English, using SQL and a delivery-time model as tools.\n\n\n\n\n\nNo matching items"
   }
 ]
