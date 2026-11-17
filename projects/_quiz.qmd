@@ -1,0 +1,447 @@
+<!--
+  Quiz on the Results, included in the Results row of project1.qmd.
+  Edit the questions in the QUESTIONS list in the script below.
+-->
+
+```{=html}
+<div class="fbq" id="fbq-quiz">
+  <p class="fbq-hook">Can you guess what 2M+ performance reviews reveal?</p>
+  <p class="fbq-intro">Six questions on how feedback differs by gender, for both the employee and the manager, based on my PhD research. Your score and my findings appear at the end.</p>
+  <p class="fbq-progress"></p>
+  <p class="fbq-question"></p>
+  <div class="fbq-options"></div>
+  <div class="fbq-buttons">
+    <button class="fbq-check" type="button">Check my answer</button>
+    <button class="fbq-next" type="button">Next question</button>
+  </div>
+  <div class="fbq-summary"></div>
+  <button class="fbq-restart" type="button">Try again</button>
+</div>
+
+<style>
+  .fbq { font-size: 1rem; }
+  .fbq-hook { color: #9A36B2; font-weight: 700; font-size: 1.3rem; margin-bottom: 0.25rem; }
+  .fbq-intro { color: #6c757d; font-size: 0.95rem; margin-bottom: 1rem; }
+  .fbq-progress { color: #9A36B2; font-size: 1.1rem; font-weight: 600; margin-bottom: 0.25rem; }
+  .fbq-question { font-weight: 600; font-size: 1.1rem; margin-bottom: 1rem; }
+  .fbq-options { display: flex; flex-direction: column; gap: 0.5rem; }
+  .fbq-option {
+    text-align: left; padding: 0.6rem 0.9rem; border-radius: 6px;
+    border: 2px solid #DFC9EA; background: white; color: #343A40; cursor: pointer;
+  }
+  .fbq-option:hover:not(:disabled) { border-color: #9A36B2; }
+  .fbq-option:disabled { cursor: default; }
+  .fbq-option.selected { border-color: #9A36B2; background: #9A36B2; color: white; }
+  .fbq-option.right { border-color: #2E8B57; background: #E8F5EC; color: #343A40; }
+  .fbq-option.wrong { border-color: #C0392B; background: #FBEAEA; color: #343A40; }
+
+  /* Sorting question */
+  .fbq-pool, .fbq-zone-items {
+    display: flex; flex-wrap: wrap; gap: 0.4rem; align-content: flex-start;
+  }
+  .fbq-pool { min-height: 2.5rem; padding: 0.5rem; border: 2px dashed #DFC9EA; border-radius: 6px; }
+  .fbq-zones { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; }
+  .fbq-zone {
+    min-height: 7rem; padding: 0.5rem; border: 2px solid #DFC9EA; border-radius: 6px;
+    background: #faf6fc; cursor: pointer;
+  }
+  .fbq-zone.over, .fbq-pool.over { border-color: #9A36B2; }
+  .fbq-zone-label { font-weight: 600; font-size: 0.9rem; color: #3F2A7A; margin-bottom: 0.4rem; }
+  .fbq-chip {
+    padding: 0.3rem 0.7rem; border-radius: 999px; border: 2px solid #9A36B2;
+    background: white; color: #343A40; font-style: italic; cursor: grab;
+    user-select: none; -webkit-user-select: none; touch-action: none;
+  }
+  .fbq-chip.dragging { position: relative; z-index: 10; cursor: grabbing; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+  .fbq-chip.picked { background: #9A36B2; color: white; }
+  .fbq-chip.right { border-color: #2E8B57; background: #E8F5EC; cursor: default; }
+  .fbq-chip.wrong { border-color: #C0392B; background: #FBEAEA; cursor: grab; }
+  .fbq-sort-score { font-weight: 600; margin-top: 0.75rem; margin-bottom: 0; }
+
+  .fbq-score { font-weight: 700; font-size: 1.2rem; margin-bottom: 0.75rem; }
+  .fbq-item { margin-bottom: 0.6rem; font-size: 0.95rem; }
+  .fbq-item .fbq-mark { font-weight: 700; margin-right: 0.3rem; }
+  .fbq-item .fbq-mark.right { color: #9A36B2; }
+  .fbq-item .fbq-mark.wrong { color: #6c757d; }
+  .fbq-buttons { display: flex; gap: 0.5rem; }
+  .fbq-next { background: #9A36B2 !important; }
+  .fbq-check, .fbq-next, .fbq-restart {
+    display: none; margin-top: 0.75rem; padding: 0.5rem 1rem; border: none;
+    border-radius: 6px; background: #3F2A7A; color: white; cursor: pointer;
+  }
+</style>
+
+<script>
+(function () {
+  // Two question types:
+  // - "choice": answer = position of the correct option (0 = first, 1 = second, 2 = third)
+  // - "sort":   each word's answer = position of the correct box
+  // result = the finding, shown in the overview at the end.
+  const QUESTIONS = [
+    {
+      type: "sort",
+      question: "Drag each adjective into the box where it appears more often (or tap a word, then a box).",
+      categories: ["Feedback to women", "Feedback to men", "No clear difference"],
+      items: [
+        { word: "confident", answer: 0 },
+        { word: "comfortable", answer: 0 },
+        { word: "overwhelmed", answer: 0 },
+        { word: "motivated", answer: 1 },
+        { word: "involved", answer: 1 },
+        { word: "experienced", answer: 1 },
+        { word: "proactive", answer: 2 },
+        { word: "strong", answer: 2 }
+      ],
+      result: "Top-ranked adjectives in feedback to women: confident, comfortable, overwhelmed. To men: motivated, involved, experienced. Proactive and strong are common in both."
+    },
+    {
+      type: "choice",
+      question: "Is feedback to women more or less positive than feedback to men?",
+      options: ["More positive", "Less positive", "No clear difference"],
+      answer: 0,
+      result: "Feedback to women is slightly more positive than feedback to men."
+    },
+    {
+      type: "choice",
+      question: "A positive written review matches a high performance rating more closely for…",
+      options: ["Women", "Men", "No clear difference"],
+      answer: 1,
+      result: "Positive written feedback matches a high rating more closely for men than for women."
+    },
+    {
+      type: "choice",
+      question: "Who writes longer feedback?",
+      options: ["Female managers", "Male managers", "No clear difference"],
+      answer: 0,
+      result: "Female managers write longer feedback: 127 words on average, compared to 108 for male managers."
+    },
+    {
+      type: "choice",
+      question: 'Female managers hedge more, using words like "maybe" and "I think", when writing to…',
+      options: ["Female employees", "Male employees", "No clear difference"],
+      answer: 0,
+      result: "Female managers hedge more with female employees (56%) than with male employees (51%). Male managers hedge equally with both."
+    },
+    {
+      type: "choice",
+      question: "Which shapes the style of feedback more?",
+      options: ["The employee's gender", "The manager's gender", "Both equally"],
+      answer: 1,
+      result: "Length, sentence structure and emotions such as caring depend more on the manager's gender than on the employee's."
+    }
+  ];
+
+  const root = document.getElementById("fbq-quiz");
+  const hook = root.querySelector(".fbq-hook");
+  const intro = root.querySelector(".fbq-intro");
+  const progress = root.querySelector(".fbq-progress");
+  const questionEl = root.querySelector(".fbq-question");
+  const optionsEl = root.querySelector(".fbq-options");
+  const check = root.querySelector(".fbq-check");
+  const next = root.querySelector(".fbq-next");
+  const summary = root.querySelector(".fbq-summary");
+  const restart = root.querySelector(".fbq-restart");
+  let current = 0;
+  let choices = [];
+  let picked = null;    // chip selected by tapping (for touch screens)
+  let checked = false;  // true once the answer has been checked (only the first check is scored)
+  let selected = null;  // chosen option in a multiple-choice question
+
+  function goNext() {
+    current++;
+    if (current < QUESTIONS.length) show();
+    else finish();
+  }
+
+  function show() {
+    const q = QUESTIONS[current];
+    progress.textContent = "Question " + (current + 1) + " of " + QUESTIONS.length;
+    questionEl.textContent = q.question;
+    optionsEl.innerHTML = "";
+    check.style.display = "none";
+    check.textContent = "Check my answer";
+    next.style.display = "none";
+    checked = false;
+    selected = null;
+    if (q.type === "sort") showSort(q);
+    else showChoice(q);
+  }
+
+  // ---------- Multiple choice: pick an option, then click "Check my answer" ----------
+  function showChoice(q) {
+    q.options.forEach(function (text, i) {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "fbq-option";
+      button.textContent = text;
+      button.addEventListener("click", function () {
+        if (checked) return;
+        optionsEl.querySelectorAll(".fbq-option").forEach(function (b) { b.classList.remove("selected"); });
+        button.classList.add("selected");
+        selected = i;
+        check.style.display = "inline-block";
+      });
+      optionsEl.appendChild(button);
+    });
+  }
+
+  function checkChoice(q) {
+    const buttons = optionsEl.querySelectorAll(".fbq-option");
+    buttons.forEach(function (b, j) {
+      b.classList.remove("selected");
+      b.disabled = true;
+      if (j === q.answer) {
+        b.classList.add("right");
+        b.textContent = "✓ " + q.options[j];
+      } else if (j === selected) {
+        b.classList.add("wrong");
+        b.textContent = "✗ " + q.options[j];
+      }
+    });
+    choices.push(selected);
+  }
+
+  // ---------- Sorting (drag a word, or tap a word and then tap a box) ----------
+  // Dragging uses pointer events, so it works the same with a mouse, a trackpad and a touch screen.
+  function showSort(q) {
+    picked = null;
+    const pool = document.createElement("div");
+    pool.className = "fbq-pool";
+    optionsEl.appendChild(pool);
+
+    const zones = document.createElement("div");
+    zones.className = "fbq-zones";
+    q.categories.forEach(function (label, i) {
+      const zone = document.createElement("div");
+      zone.className = "fbq-zone";
+      zone.dataset.zone = i;
+      const title = document.createElement("div");
+      title.className = "fbq-zone-label";
+      title.textContent = label;
+      const items = document.createElement("div");
+      items.className = "fbq-zone-items";
+      zone.appendChild(title);
+      zone.appendChild(items);
+      zones.appendChild(zone);
+      // Tap mode: tap a word, then tap a box
+      zone.addEventListener("click", function () {
+        if (picked) moveChip(picked, items);
+      });
+    });
+    optionsEl.appendChild(zones);
+    pool.addEventListener("click", function () {
+      if (picked) moveChip(picked, pool);
+    });
+
+    shuffle(q.items.slice()).forEach(function (item) {
+      const chip = document.createElement("span");
+      chip.className = "fbq-chip";
+      chip.setAttribute("role", "button");
+      chip.tabIndex = 0;
+      chip.textContent = item.word;
+      chip.dataset.word = item.word;
+      enableDrag(chip);
+      pool.appendChild(chip);
+    });
+  }
+
+  function enableDrag(chip) {
+    let startX = 0, startY = 0, pointerId = null, moved = false;
+
+    chip.addEventListener("pointerdown", function (e) {
+      if (chip.classList.contains("right") && !picked) return; // green words stay put
+      pointerId = e.pointerId;
+      startX = e.clientX;
+      startY = e.clientY;
+      moved = false;
+      chip.setPointerCapture(pointerId);
+      e.preventDefault();
+    });
+
+    chip.addEventListener("pointermove", function (e) {
+      if (e.pointerId !== pointerId) return;
+      const dx = e.clientX - startX, dy = e.clientY - startY;
+      if (!moved && Math.abs(dx) + Math.abs(dy) < 5) return; // small movement = a tap
+      if (chip.classList.contains("right")) return;           // green words can't be dragged
+      moved = true;
+      chip.classList.add("dragging");
+      chip.style.transform = "translate(" + dx + "px, " + dy + "px)";
+      highlight(targetAt(chip, e.clientX, e.clientY));
+    });
+
+    function end(e, cancelled) {
+      if (e.pointerId !== pointerId) return;
+      pointerId = null;
+      chip.classList.remove("dragging");
+      chip.style.transform = "";
+      highlight(null);
+      if (cancelled) return;
+      if (moved) {
+        const target = targetAt(chip, e.clientX, e.clientY);
+        if (target) moveChip(chip, target);
+      } else {
+        // A tap on a green word while another word is selected: move the selected word into that box
+        if (picked && picked !== chip && chip.classList.contains("right")) {
+          moveChip(picked, chip.parentElement);
+          return;
+        }
+        // A tap: select this word, then tap a box
+        if (picked === chip) { chip.classList.remove("picked"); picked = null; return; }
+        if (picked) picked.classList.remove("picked");
+        picked = chip;
+        chip.classList.add("picked");
+      }
+    }
+    chip.addEventListener("pointerup", function (e) { end(e, false); });
+    chip.addEventListener("pointercancel", function (e) { end(e, true); });
+
+    // The browser also sends a click after a tap or drag; stop it reaching the box underneath
+    chip.addEventListener("click", function (e) { e.stopPropagation(); });
+  }
+
+  // Find the box (or the starting area) under the pointer
+  function targetAt(chip, x, y) {
+    chip.style.visibility = "hidden";
+    const el = document.elementFromPoint(x, y);
+    chip.style.visibility = "";
+    if (!el) return null;
+    const zone = el.closest(".fbq-zone");
+    if (zone && optionsEl.contains(zone)) return zone.querySelector(".fbq-zone-items");
+    const pool = el.closest(".fbq-pool");
+    if (pool && optionsEl.contains(pool)) return pool;
+    return null;
+  }
+
+  function highlight(container) {
+    optionsEl.querySelectorAll(".over").forEach(function (el) { el.classList.remove("over"); });
+    if (!container) return;
+    const box = container.closest(".fbq-zone") || container;
+    box.classList.add("over");
+  }
+
+  function answerFor(word) {
+    const item = QUESTIONS[current].items.find(function (it) { return it.word === word; });
+    return item.answer;
+  }
+
+  // Colour one word green (right box, then fixed in place) or red (wrong box, can be moved again)
+  function mark(chip) {
+    const zone = chip.closest(".fbq-zone");
+    const right = answerFor(chip.dataset.word) === Number(zone.dataset.zone);
+    chip.classList.remove("right", "wrong", "picked");
+    chip.classList.add(right ? "right" : "wrong");
+    chip.textContent = (right ? "✓ " : "✗ ") + chip.dataset.word;
+    return right;
+  }
+
+  function updateScore() {
+    const total = QUESTIONS[current].items.length;
+    const n = optionsEl.querySelectorAll(".fbq-chip.right").length;
+    let score = optionsEl.querySelector(".fbq-sort-score");
+    if (!score) {
+      score = document.createElement("p");
+      score.className = "fbq-sort-score";
+      optionsEl.appendChild(score);
+    }
+    score.textContent = n === total
+      ? "All " + total + " words in the right box!"
+      : n + " of " + total + " words in the right box. Drag the red ones to another box.";
+  }
+
+  function moveChip(chip, container) {
+    if (checked) {
+      // After the first check: red words can move between boxes and are marked straight away
+      if (!container.closest(".fbq-zone")) return; // not back to the starting area
+      picked = null;
+      container.appendChild(chip);
+      mark(chip);
+      updateScore();
+      return;
+    }
+    chip.classList.remove("picked");
+    picked = null;
+    container.appendChild(chip);
+    const left = optionsEl.querySelector(".fbq-pool").children.length;
+    check.style.display = left === 0 ? "inline-block" : "none";
+  }
+
+  function checkSort() {
+    const placed = {};
+    optionsEl.querySelectorAll(".fbq-chip").forEach(function (chip) {
+      placed[chip.dataset.word] = Number(chip.closest(".fbq-zone").dataset.zone);
+      mark(chip);
+    });
+    choices.push(placed);
+    updateScore();
+  }
+
+  // Check: colour the answer green or red, then show "Next question"
+  check.addEventListener("click", function () {
+    const q = QUESTIONS[current];
+    if (q.type === "sort") checkSort();
+    else checkChoice(q);
+    checked = true;
+    check.style.display = "none";
+    next.textContent = current === QUESTIONS.length - 1 ? "See my score" : "Next question";
+    next.style.display = "inline-block";
+  });
+
+  next.addEventListener("click", function () {
+    next.style.display = "none";
+    goNext();
+  });
+
+  function shuffle(list) {
+    for (let i = list.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      const tmp = list[i]; list[i] = list[j]; list[j] = tmp;
+    }
+    return list;
+  }
+
+  // ---------- Results ----------
+  function isRight(q, choice) {
+    if (q.type === "sort") {
+      return q.items.every(function (item) { return choice[item.word] === item.answer; });
+    }
+    return choice === q.answer;
+  }
+
+  function finish() {
+    const correct = QUESTIONS.filter(function (q, i) { return isRight(q, choices[i]); }).length;
+    hook.style.display = "none";
+    intro.style.display = "none";
+    progress.textContent = "";
+    questionEl.textContent = "";
+    optionsEl.innerHTML = "";
+
+    let html = '<p class="fbq-score">' + correct + " correct, " +
+      (QUESTIONS.length - correct) + " incorrect</p>";
+    QUESTIONS.forEach(function (q, i) {
+      const right = isRight(q, choices[i]);
+      let extra = "";
+      if (q.type === "sort") {
+        const n = q.items.filter(function (item) { return choices[i][item.word] === item.answer; }).length;
+        extra = " You placed " + n + " of " + q.items.length + " words correctly.";
+      }
+      html += '<p class="fbq-item"><span class="fbq-mark ' + (right ? "right" : "wrong") + '">' +
+        (right ? "✓" : "✗") + "</span>" + q.result + extra + "</p>";
+    });
+    summary.innerHTML = html;
+    restart.style.display = "inline-block";
+  }
+
+  restart.addEventListener("click", function () {
+    current = 0;
+    choices = [];
+    summary.innerHTML = "";
+    hook.style.display = "";
+    intro.style.display = "";
+    restart.style.display = "none";
+    show();
+  });
+
+  show();
+})();
+</script>
+```

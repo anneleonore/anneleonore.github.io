@@ -31,17 +31,17 @@ dict(icon="building", color="#9A36B2", value="—")
 
 ```{python}
 #| content: valuebox
-#| title: "Managers"
-dict(icon="people", color="#9A36B2", value="—")
+#| title: "Women are described as"
+dict(icon="chat-heart", color="#9A36B2", value="confident")
 ```
 
 ```{python}
 #| content: valuebox
-#| title: "Sentiment model accuracy"
-dict(icon="cpu", color="#9A36B2", value="89.9%")
+#| title: "Men are described as"
+dict(icon="rocket-takeoff", color="#9A36B2", value="motivated")
 ```
 
-## Results {height=500px}
+## Results {height=580px}
 
 ::: {.card .spacer width="10%"}
 :::
@@ -52,10 +52,8 @@ dict(icon="cpu", color="#9A36B2", value="89.9%")
 :::
 :::
 
-::: {.card title="Chart 2" width="40%"}
-::: {.placeholder-chart}
-
-:::
+::: {.card title="Quiz on the Results" width="40%"}
+{{< include _quiz.qmd >}}
 :::
 
 ::: {.card .spacer width="10%"}
