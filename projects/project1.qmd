@@ -53,7 +53,9 @@ dict(icon="rocket-takeoff", color="#9A36B2", value="motivated")
 :::
 
 ::: {.card title="Quiz on the Results" width="40%"}
+::: {.quiz-wrap}
 {{< include _quiz.qmd >}}
+:::
 :::
 
 ::: {.card .spacer width="10%"}
