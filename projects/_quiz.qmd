@@ -5,8 +5,8 @@
 
 ```{=html}
 <div class="fbq" id="fbq-quiz">
-  <p class="fbq-hook">Can you guess what 2M+ performance reviews reveal?</p>
-  <p class="fbq-intro">Six questions on how feedback differs by gender, for both the employee and the manager, based on my PhD research. Your score and my findings appear at the end.</p>
+  <p class="fbq-hook">How do managers write about women and men?</p>
+  <p class="fbq-intro">Six questions based on my PhD research. You will see the right answer after each question, and your total score at the end.</p>
   <p class="fbq-progress"></p>
   <p class="fbq-question"></p>
   <div class="fbq-options"></div>

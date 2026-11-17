@@ -1,0 +1,33 @@
+<!--
+  Feedback Checker PREVIEW, included in project1.qmd.
+  Static placeholder for the future Streamlit app; nothing is analysed yet.
+  Replace this include with the app's iframe once the app is live.
+-->
+
+```{=html}
+<div class="fbc">
+
+  <p class="fbc-title">Feedback Checker</p>
+  <p class="fbc-sub">Type a sentence of feedback and see how agentic or communal it sounds.</p>
+
+  <label class="fbc-label" for="fbc-input">Your feedback</label>
+  <textarea id="fbc-input" class="fbc-input" rows="3" disabled>She should be more confident when presenting to clients.</textarea>
+  <button class="fbc-button" type="button" disabled>Analyse</button>
+</div>
+
+<style>
+  .fbc { font-size: 0.95rem; color: #31333F; }
+  .fbc * { box-sizing: border-box; }
+  .fbc-title { font-size: 1.4rem; font-weight: 700; margin: 0 0 0.25rem 0; }
+  .fbc-sub { color: #6c757d; margin-bottom: 1rem; }
+  .fbc-label { display: block; font-size: 0.85rem; margin-bottom: 0.3rem; }
+  .fbc-input {
+    width: 100%; padding: 0.6rem; border: 1px solid #D6D6D9; border-radius: 6px;
+    background: #F0F2F6; color: #31333F; font-family: inherit; font-size: 0.95rem; resize: none;
+  }
+  .fbc-button {
+    margin-top: 0.6rem; padding: 0.45rem 1rem; border: 1px solid #9A36B2; border-radius: 6px;
+    background: white; color: #9A36B2; font-weight: 600; cursor: not-allowed;
+  }
+</style>
+```

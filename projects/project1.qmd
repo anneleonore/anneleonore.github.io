@@ -19,41 +19,41 @@ execute:
 
 ```{python}
 #| content: valuebox
-#| title: "Feedback records"
-dict(icon="chat-square-text", color="#9A36B2", value="2M+")
+#| title: "Feedback entries analysed"
+dict(icon="chat-square-text", color="#9A36B2", value="40K+")
 ```
 
 ```{python}
 #| content: valuebox
-#| title: "Organisations"
-dict(icon="building", color="#9A36B2", value="—")
+#| title: "Feedback type"
+dict(icon="arrow-up-right-circle", color="#9A36B2", value="Developmental")
 ```
 
 ```{python}
 #| content: valuebox
-#| title: "Women are described as"
-dict(icon="chat-heart", color="#9A36B2", value="confident")
+#| title: "Review period"
+dict(icon="calendar3", color="#9A36B2", value="2021–2025")
 ```
 
 ```{python}
 #| content: valuebox
-#| title: "Men are described as"
-dict(icon="rocket-takeoff", color="#9A36B2", value="motivated")
+#| title: "Largest sector"
+dict(icon="cpu", color="#9A36B2", value="Tech (49%)")
 ```
 
-## Results {height=580px}
+## Results {height=600px}
 
 ::: {.card .spacer width="10%"}
 :::
 
-::: {.card title="Chart 1" width="40%"}
+::: {.card title="Results" width="40%"}
 ::: {.placeholder-chart}
-
+Results chart coming soon
 :::
 :::
 
 ::: {.card title="Quiz on the Results" width="40%"}
-::: {.quiz-wrap}
+::: {.include-wrap}
 {{< include _quiz.qmd >}}
 :::
 :::
@@ -61,41 +61,36 @@ dict(icon="rocket-takeoff", color="#9A36B2", value="motivated")
 ::: {.card .spacer width="10%"}
 :::
 
-## More results {height=480px}
+## Checker {height=450px}
 
 ::: {.card .spacer width="10%"}
 :::
 
-::: {.card title="Chart 3" width="80%"}
-::: {.placeholder-chart}
-
+::: {.card title="Feedback checker" width="80%"}
+::: {.include-wrap}
+{{< include _checker.qmd >}}
 :::
 :::
 
 ::: {.card .spacer width="10%"}
 :::
 
-## About {height=650px}
+## About {height=700px}
 
 ::: {.card .spacer width="25%"}
 :::
 
 ::: {.card title="About this study" width="50%"}
 
-I examined whether women and men are described differently in workplace feedback. Across several studies, I applied natural language processing (NLP) and machine learning to 2M+ feedback records from organisations on Culture Amp's platform.
+I examined whether women and men are described differently in workplace feedback. This page shows one study where I used natural language processing (NLP) to analyse developmental feedback entries managers submitted through Culture Amp’s platform.
 
 **Methods**
 
-- **Sentiment:** Classified how positive or negative feedback was, using a RoBERTa language model that agreed with human coders 89.9% of the time.
-- **Emotions:** Identified 28 emotions, such as gratitude or admiration, using a language model trained on emotion-labelled text (GoEmotions).
-- **Agentic and communal language:** Measured how close feedback was to agentic words (such as "ambitious") or communal words (such as "supportive"), using sentence embeddings.
-- **Distinctive words:** Identified which words appeared more in feedback to women compared to men, using weighted log-odds.
-- **Topics:** Identified the main themes in feedback by grouping words that often appear together (non-negative matrix factorisation, NMF).
-- **Style:** Measured length, hedging, word variety and grammatical complexity.
-
-**Data and privacy**
-
-- Results are shown as aggregates only. No feedback texts or individual records are shared.
+- **Agentic and communal language:** A language model (BERT) turned each mention of the employee into a numerical representation of how they were described in that sentence (a contextual embedding), and measured how close it was to the same kind of representation for agentic traits (such as “ambitious”) and communal traits (such as “supportive”).
+- **Distinctive words:** Identified which adjectives appeared more often in feedback to women compared to men, using a statistical method that accounts for how common each word is (weighted log-odds).
+- **Sentiment:** Classified how positive or negative each sentence was, using a language model (RoBERTa) that agreed with human coders 90% of the time.
+- **Hedging:** Detected uncertain wording, such as "maybe" or "I think", using a language model trained to recognise hedges (HedgeHog).
+- **Statistics:** Multilevel models to compare feedback by employee and manager gender, and longitudinal models to track changes across review cycles.
 
 **Credits**
 
