@@ -1,7 +1,6 @@
 /* =========================================================
    CULTURE AMP DASHBOARD ONLY
    Loaded only by projects/project1.qmd.
-   Font sizes come from styles.css, shared with the Melbourne dashboard.
    ========================================================= */
 
 :root {
@@ -17,7 +16,24 @@
   border-bottom: none !important;
 }
 
-/* Value boxes: white text and fully white icons */
+/* Links inside cards */
+.quarto-dashboard .card a { color: var(--fb-purple); }
+.quarto-dashboard .card a:hover { color: var(--fb-purple-dark); }
+
+/* Placeholder boxes, until the charts are added */
+.placeholder-chart {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 260px;
+  background: transparent;
+  color: #8A8A8A;
+  font-style: italic;
+}
+
+/* ---------- Value boxes ---------- */
+
+/* White text and fully white icons */
 .bslib-value-box,
 .bslib-value-box .value-box-title,
 .bslib-value-box .value-box-value,
@@ -28,36 +44,29 @@
   color: white !important;
   opacity: 1 !important;
 }
-.bslib-value-box svg {
-  fill: white !important;
-}
-.bslib-value-box {
-  border: none !important;
-}
+.bslib-value-box svg { fill: white !important; }
+.bslib-value-box { border: none !important; }
 
-/* Placeholder boxes, until the charts are added */
-.placeholder-chart {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 260px;
-  background: transparent;   /* same white as the card */
-  color: #8A8A8A;            /* light grey text */
-  font-style: italic;
+/* Icon on the left at all widths */
+.bslib-value-box .value-box-grid {
+  grid-template-columns: auto 1fr !important;
+  grid-template-rows: auto !important;
+}
+.bslib-value-box .value-box-showcase .bi {
+  font-size: 2.5rem !important;
 }
 
-.quarto-dashboard .card a { color: var(--fb-purple); }
-.quarto-dashboard .card a:hover { color: var(--fb-purple-dark); }
-
-/* Value boxes: same sizes as the Melbourne dashboard */
+/* Title: same size as the Melbourne dashboard; wraps onto a second line if needed */
 .quarto-dashboard .bslib-value-box .value-box-title {
   font-size: 1.1rem !important;
   font-weight: 400 !important;
+  line-height: 1.25;
 }
+
+/* Value: same size as the Melbourne dashboard, single line */
 .quarto-dashboard .bslib-value-box .value-box-value {
   font-size: 1.5rem !important;
   font-weight: 700 !important;
-}
-.quarto-dashboard .bslib-value-box .value-box-showcase {
-  font-size: 1.5rem !important;
+  line-height: 1.2;
+  white-space: nowrap;
 }
