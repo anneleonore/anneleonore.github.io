@@ -1,0 +1,81 @@
+/* =========================================================
+   RESULTS STEP-THROUGH (project1.qmd, Results card)
+   One finding at a time, with Previous / Next and dots.
+   ========================================================= */
+
+.fbr { display: flex; flex-direction: column; height: 100%; }
+
+.fbr-counter {
+  font-size: 0.85rem; font-weight: 600; color: #9A36B2;
+  text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 0.25rem;
+}
+
+.fbr-title { font-size: 1.2rem; font-weight: 700; color: #343A40; margin-bottom: 0.75rem; }
+
+.fbr-step { flex: 1; }
+
+.fbr-nav {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid #E6E6EA;
+}
+
+.fbr-btn {
+  font-size: 0.85rem; font-weight: 500; padding: 0.35rem 0.9rem;
+  border: 1px solid #DFC9EA; border-radius: 999px; background: white; color: #3F2A7A; cursor: pointer;
+}
+.fbr-btn:hover:not(:disabled) { border-color: #9A36B2; background: #FAF6FC; }
+.fbr-btn:disabled { opacity: 0.35; cursor: default; }
+
+.fbr-dots { display: flex; gap: 0.4rem; }
+.fbr-dot {
+  width: 9px; height: 9px; padding: 0; border-radius: 50%;
+  border: none; background: #DFC9EA; cursor: pointer;
+}
+.fbr-dot.active { background: #9A36B2; }
+
+/* Trait grid in Finding 1: 2 x 2 with a cross between the quadrants.
+   The dashboard makes every block a flex container, so the layout is set with !important. */
+.fbr-grid {
+  display: grid !important;
+  grid-template-columns: auto 1fr 1fr;
+  max-width: 420px;
+  margin: 0.25rem auto 1rem auto;
+  font-size: 0.8rem;
+}
+.fbr-grid > div { display: block !important; min-height: 0; }
+.fbr-grid-head {
+  text-align: center; font-weight: 600; color: #3F2A7A; padding-bottom: 0.3rem;
+}
+.fbr-grid-side {
+  align-self: center; text-align: right;
+  padding-right: 0.6rem; font-weight: 600; color: #3F2A7A;
+}
+.fbr-cell { text-align: center; line-height: 1.5; padding: 0.4rem 0.5rem; color: #495057; }
+.fbr-cell-tl { border-right: 1px solid #CED4DA; border-bottom: 1px solid #CED4DA; }
+.fbr-cell-tr { border-bottom: 1px solid #CED4DA; }
+.fbr-cell-bl { border-right: 1px solid #CED4DA; }
+
+/* ---------- Method slider in Finding 1 ---------- */
+.fbm { display: flex !important; flex-direction: column; flex: 1; font-size: 0.85rem; }
+.fbm > div, .fbm-panels > div, .fbm-panel > div:not(.fbr-grid) { min-height: 0; }
+.fbm-panels { flex: 1; display: block !important; }
+.fbm-panel { display: none; }
+.fbm-step-title { font-weight: 700; color: #9A36B2; margin: 0 0 0.35rem 0; font-size: 0.9rem; }
+.fbm-text { color: #495057; margin: 0 0 0.6rem 0; line-height: 1.45; }
+.fbm-note { color: #8A8A8A; font-style: italic; font-size: 0.75rem; margin: 0; }
+.fbm-example {
+  display: block !important; background: #FAF6FC; border-radius: 6px; padding: 0.6rem 0.75rem;
+  margin: 0 0 0.6rem 0; color: #343A40; line-height: 1.5;
+}
+.fbm-example mark { background: #DFC9EA; padding: 0 0.15rem; border-radius: 3px; }
+.fbm-example code { color: #3F2A7A; background: none; font-size: 0.8rem; }
+.fbm-arrow { color: #9A36B2; margin: 0 0.3rem; }
+.fbm-list { margin: 0 0 0.6rem 0; padding-left: 1.1rem; color: #495057; line-height: 1.45; }
+
+.fbm-slider { display: block !important; margin-top: 0.5rem; }
+.fbm-slider input[type=range] { width: 100%; accent-color: #9A36B2; cursor: pointer; }
+.fbm-labels { display: flex !important; flex-direction: row !important; justify-content: space-between; font-size: 0.7rem; color: #8A8A8A; }
+.fbm-labels span { cursor: pointer; text-align: center; flex: 1; }
+.fbm-labels span:first-child { text-align: left; }
+.fbm-labels span:last-child { text-align: right; }
+.fbm-labels span.active { color: #9A36B2; font-weight: 700; }

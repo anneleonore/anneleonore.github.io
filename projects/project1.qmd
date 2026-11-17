@@ -9,7 +9,7 @@ format:
   dashboard:
     orientation: rows
     scrolling: true
-    css: [../styles.css, feedback-dashboard.css]
+    css: [../styles.css, feedback-dashboard.css, results-tabs.css]
 execute:
   echo: false
   warning: false
@@ -46,10 +46,8 @@ dict(icon="cpu", color="#9A36B2", value="Tech (49%)")
 ::: {.card .spacer width="10%"}
 :::
 
-::: {.card title="Results" width="40%"}
-::: {.placeholder-chart}
-Results chart coming soon
-:::
+::: {.card title="Results" width="40%" expandable="false"}
+{{< include _results.qmd >}}
 :::
 
 ::: {.card title="Quiz on the Results" width="40%"}

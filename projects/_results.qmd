@@ -1,0 +1,234 @@
+::: {.fbr}
+
+::: {.fbr-step}
+::: {.fbr-title}
+Managers describe men in more agentic and less communal terms than they describe women
+:::
+
+```{=html}
+<div class="fbm">
+  <div class="fbm-panels">
+
+    <div class="fbm-panel">
+      <p class="fbm-step-title">Step 1 · Trait words</p>
+      <p class="fbm-text">Traits from validated psychology scales, sorted into four groups.</p>
+      <div class="fbr-grid">
+        <div></div>
+        <div class="fbr-grid-head">Agentic</div>
+        <div class="fbr-grid-head">Communal</div>
+        <div class="fbr-grid-side">Positive</div>
+        <div class="fbr-cell fbr-cell-tl">ambitious<br>competent<br>determined</div>
+        <div class="fbr-cell fbr-cell-tr">caring<br>helpful<br>supportive</div>
+        <div class="fbr-grid-side">Negative</div>
+        <div class="fbr-cell fbr-cell-bl">passive<br>insecure<br>dependent</div>
+        <div class="fbr-cell fbr-cell-br">detached<br>inconsiderate<br>unapproachable</div>
+      </div>
+    </div>
+
+    <div class="fbm-panel">
+      <p class="fbm-step-title">Step 2 · Turn the traits into numbers</p>
+      <p class="fbm-text">Each trait is placed in a sentence, and a language model (BERT) turns the trait into a numerical representation of its meaning.</p>
+      <div class="fbm-example">
+        This person is <mark>ambitious</mark> <span class="fbm-arrow">→</span> <code>[0.71, −0.36, 0.15, …]</code>
+      </div>
+      <p class="fbm-text">Averaging within each group gives four reference points: positive and negative agency, positive and negative communion.</p>
+    </div>
+
+    <div class="fbm-panel">
+      <p class="fbm-step-title">Step 3 · Find every reference to the employee</p>
+      <p class="fbm-text">In each piece of feedback, every word that refers to the employee is turned into numbers in the same way. The numbers reflect how the employee is described in that sentence.</p>
+      <div class="fbm-example">
+        "<mark>She</mark> should be more confident when presenting to clients." <span class="fbm-arrow">→</span> <code>[0.18, 0.42, −0.09, …]</code>
+      </div>
+      <p class="fbm-note">Example sentence, not from the data.</p>
+    </div>
+
+    <div class="fbm-panel">
+      <p class="fbm-step-title">Step 4 · Compare with the traits</p>
+      <p class="fbm-text">Each reference is compared with the four reference points. This gives two scores:</p>
+      <ul class="fbm-list">
+        <li><strong>Agency score:</strong> how much closer it is to positive than to negative agentic traits</li>
+        <li><strong>Communion score:</strong> how much closer it is to positive than to negative communal traits</li>
+      </ul>
+    </div>
+
+    <div class="fbm-panel">
+      <p class="fbm-step-title">Step 5 · Compare men and women</p>
+      <p class="fbm-text">The scores are averaged per feedback entry and compared between male and female employees, taking the manager's gender into account.</p>
+      <p class="fbm-text">To rule out that "he" and "she" simply differ as words, the comparison is repeated with gender-neutral references only ("you", "your").</p>
+    </div>
+
+    <div class="fbm-panel">
+      <p class="fbm-step-title">Step 6 · Result</p>
+      <div class="placeholder-chart">Chart: agency and communion scores by employee gender</div>
+    </div>
+
+  </div>
+
+  <div class="fbm-slider">
+    <input type="range" min="1" max="6" step="1" value="1" aria-label="Method step">
+    <div class="fbm-labels">
+      <span>Traits</span><span>Numbers</span><span>References</span><span>Compare</span><span>Men vs women</span><span>Result</span>
+    </div>
+  </div>
+</div>
+```
+:::
+
+::: {.fbr-step}
+::: {.fbr-title}
+Women are told to be more confident, men what to improve
+:::
+
+```{=html}
+<div class="fbm">
+  <div class="fbm-panels">
+
+    <div class="fbm-panel">
+      <p class="fbm-step-title">Step 1 · Find the employee</p>
+      <p class="fbm-text">In every sentence, the words referring to the employee are located: "she", "he", "you", "your" or the employee's (anonymised) name.</p>
+      <div class="fbm-example">
+        "<mark>She</mark> should feel more confident when presenting."<br>
+        "<mark>He</mark> can improve his planning."
+      </div>
+      <p class="fbm-note">Example sentences, not from the data.</p>
+    </div>
+
+    <div class="fbm-panel">
+      <p class="fbm-step-title">Step 2 · Read the grammar</p>
+      <p class="fbm-text">A transformer-based grammar parser (spaCy) finds the words that describe the employee: <strong>adjectives</strong> about them and <strong>verbs</strong> they are the subject or object of.</p>
+      <div class="fbm-example">
+        "She should <mark>feel</mark> more <mark>confident</mark> when presenting."
+        <span class="fbm-arrow">→</span> verb: <em>feel</em> · adjective: <em>confident</em><br>
+        "He can <mark>improve</mark> his planning."
+        <span class="fbm-arrow">→</span> verb: <em>improve</em>
+      </div>
+    </div>
+
+    <div class="fbm-panel">
+      <p class="fbm-step-title">Step 3 · Clean the words</p>
+      <p class="fbm-text">Each word is reduced to its base form, so variants count as one word.</p>
+      <div class="fbm-example">
+        feels, feeling, felt <span class="fbm-arrow">→</span> <em>feel</em>
+      </div>
+      <p class="fbm-text">Spelling errors are corrected, and words used fewer than 10 times are left out.</p>
+    </div>
+
+    <div class="fbm-panel">
+      <p class="fbm-step-title">Step 4 · Find the distinctive words</p>
+      <p class="fbm-text">For each word, a statistical method (weighted log-odds) compares how often it appears in feedback to women and to men, corrected so that rare words don't look more distinctive than they are.</p>
+      <ul class="fbm-list">
+        <li><strong>Positive score:</strong> more typical of feedback to women</li>
+        <li><strong>Negative score:</strong> more typical of feedback to men</li>
+      </ul>
+    </div>
+
+    <div class="fbm-panel">
+      <p class="fbm-step-title">Step 5 · Result</p>
+      <div class="placeholder-chart">Chart: most distinctive words in feedback to women and men</div>
+    </div>
+
+  </div>
+
+  <div class="fbm-slider">
+    <input type="range" min="1" max="5" step="1" value="1" aria-label="Method step">
+    <div class="fbm-labels">
+      <span>Employee</span><span>Grammar</span><span>Clean</span><span>Compare</span><span>Result</span>
+    </div>
+  </div>
+</div>
+```
+:::
+
+::: {.fbr-step}
+::: {.fbr-title}
+Praise matches high ratings less closely for women
+:::
+
+::: {.placeholder-chart}
+Chart: link between positive feedback and ratings, by employee gender
+:::
+:::
+
+::: {.fbr-step}
+::: {.fbr-title}
+Female managers write longer, more caring feedback
+:::
+
+::: {.placeholder-chart}
+Chart: feedback length and emotions by manager gender
+:::
+:::
+
+:::
+
+```{=html}
+<script>
+(function () {
+  // ── Findings: one finding at a time, with Previous / Next and dots ──────────
+  function setupFindings(root) {
+    const steps = Array.from(root.querySelectorAll(':scope > .fbr-step'));
+    if (!steps.length) return;
+    let current = 0;
+
+    const counter = document.createElement('div');
+    counter.className = 'fbr-counter';
+    root.insertBefore(counter, root.firstChild);
+
+    const nav = document.createElement('div');
+    nav.className = 'fbr-nav';
+    const prev = document.createElement('button');
+    prev.type = 'button'; prev.className = 'fbr-btn'; prev.textContent = '← Previous';
+    const dots = document.createElement('div');
+    dots.className = 'fbr-dots';
+    const next = document.createElement('button');
+    next.type = 'button'; next.className = 'fbr-btn'; next.textContent = 'Next →';
+    steps.forEach(function (_, i) {
+      const dot = document.createElement('button');
+      dot.type = 'button'; dot.className = 'fbr-dot';
+      dot.setAttribute('aria-label', 'Finding ' + (i + 1));
+      dot.addEventListener('click', function () { show(i); });
+      dots.appendChild(dot);
+    });
+    nav.appendChild(prev); nav.appendChild(dots); nav.appendChild(next);
+    root.appendChild(nav);
+
+    function show(i) {
+      current = i;
+      steps.forEach(function (s, j) { s.style.display = j === i ? '' : 'none'; });
+      counter.textContent = 'Finding ' + (i + 1) + ' of ' + steps.length;
+      prev.disabled = i === 0;
+      next.disabled = i === steps.length - 1;
+      dots.querySelectorAll('.fbr-dot').forEach(function (d, j) { d.classList.toggle('active', j === i); });
+      window.dispatchEvent(new Event('resize'));   // lets charts in a newly shown step resize
+    }
+    prev.addEventListener('click', function () { if (current > 0) show(current - 1); });
+    next.addEventListener('click', function () { if (current < steps.length - 1) show(current + 1); });
+    show(0);
+  }
+
+  // ── Method sliders: one method step at a time ───────────────────────────────
+  function setupSlider(root) {
+    const panels = root.querySelectorAll('.fbm-panel');
+    const slider = root.querySelector('input[type=range]');
+    const labels = root.querySelectorAll('.fbm-labels span');
+    function show(n) {
+      panels.forEach(function (p, i) { p.style.display = (i === n - 1) ? 'block' : 'none'; });
+      labels.forEach(function (l, i) { l.classList.toggle('active', i === n - 1); });
+      slider.value = n;
+      window.dispatchEvent(new Event('resize'));
+    }
+    slider.addEventListener('input', function () { show(Number(slider.value)); });
+    labels.forEach(function (l, i) { l.addEventListener('click', function () { show(i + 1); }); });
+    show(1);
+  }
+
+  function init() {
+    document.querySelectorAll('.fbm').forEach(setupSlider);
+    document.querySelectorAll('.fbr').forEach(setupFindings);
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+  else init();
+})();
+</script>
+```
