@@ -1,0 +1,63 @@
+/* =========================================================
+   CULTURE AMP DASHBOARD ONLY
+   Loaded only by projects/project1.qmd.
+   Font sizes come from styles.css, shared with the Melbourne dashboard.
+   ========================================================= */
+
+:root {
+  --fb-purple: #9A36B2;        /* main accent, value boxes */
+  --fb-purple-dark: #3F2A7A;   /* hover */
+  --fb-purple-light: #DFC9EA;  /* card headers */
+}
+
+/* Card headers: light purple bar, white title */
+.quarto-dashboard .card-header {
+  background-color: var(--fb-purple-light) !important;
+  color: white !important;
+  border-bottom: none !important;
+}
+
+/* Value boxes: white text and fully white icons */
+.bslib-value-box,
+.bslib-value-box .value-box-title,
+.bslib-value-box .value-box-value,
+.bslib-value-box .value-box-showcase,
+.bslib-value-box .value-box-showcase *,
+.bslib-value-box .bi,
+.bslib-value-box .bi::before {
+  color: white !important;
+  opacity: 1 !important;
+}
+.bslib-value-box svg {
+  fill: white !important;
+}
+.bslib-value-box {
+  border: none !important;
+}
+
+/* Placeholder boxes, until the charts are added */
+.placeholder-chart {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 260px;
+  background: transparent;   /* same white as the card */
+  color: #8A8A8A;            /* light grey text */
+  font-style: italic;
+}
+
+.quarto-dashboard .card a { color: var(--fb-purple); }
+.quarto-dashboard .card a:hover { color: var(--fb-purple-dark); }
+
+/* Value boxes: same sizes as the Melbourne dashboard */
+.quarto-dashboard .bslib-value-box .value-box-title {
+  font-size: 1.1rem !important;
+  font-weight: 400 !important;
+}
+.quarto-dashboard .bslib-value-box .value-box-value {
+  font-size: 1.5rem !important;
+  font-weight: 700 !important;
+}
+.quarto-dashboard .bslib-value-box .value-box-showcase {
+  font-size: 1.5rem !important;
+}

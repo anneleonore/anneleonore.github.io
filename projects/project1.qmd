@@ -1,7 +1,111 @@
 ---
 title: "Performance Reviews at Scale with NLP"
-subtitle: "Research collaboration"
-description: "My PhD research with Culture Amp: Using NLP to compare 2M+ performance feedback records by gender."
-categories: [NLP, ML, Text Analytics, People Analytics]
+subtitle: "Interactive dashboard"
+description: "My PhD research with Culture Amp: using NLP to analyse 2M+ performance feedback records and compare them by gender."
+categories: [NLP, People Analytics, Machine learning]
 image: ../images/culture-amp.png
+jupyter: portfolio
+format:
+  dashboard:
+    orientation: rows
+    scrolling: true
+    css: [../styles.css, feedback-dashboard.css]
+execute:
+  echo: false
+  warning: false
 ---
+
+## Headline numbers {height=180px}
+
+```{python}
+#| content: valuebox
+#| title: "Feedback records"
+dict(icon="chat-square-text", color="#9A36B2", value="2M+")
+```
+
+```{python}
+#| content: valuebox
+#| title: "Organisations"
+dict(icon="building", color="#9A36B2", value="—")
+```
+
+```{python}
+#| content: valuebox
+#| title: "Managers"
+dict(icon="people", color="#9A36B2", value="—")
+```
+
+```{python}
+#| content: valuebox
+#| title: "Sentiment model accuracy"
+dict(icon="cpu", color="#9A36B2", value="89.9%")
+```
+
+## Results {height=500px}
+
+::: {.card .spacer width="10%"}
+:::
+
+::: {.card title="Chart 1" width="40%"}
+::: {.placeholder-chart}
+
+:::
+:::
+
+::: {.card title="Chart 2" width="40%"}
+::: {.placeholder-chart}
+
+:::
+:::
+
+::: {.card .spacer width="10%"}
+:::
+
+## More results {height=480px}
+
+::: {.card .spacer width="10%"}
+:::
+
+::: {.card title="Chart 3" width="80%"}
+::: {.placeholder-chart}
+
+:::
+:::
+
+::: {.card .spacer width="10%"}
+:::
+
+## About {height=650px}
+
+::: {.card .spacer width="25%"}
+:::
+
+::: {.card title="About this study" width="50%"}
+
+I examined whether women and men are described differently in workplace feedback. Across several studies, I applied natural language processing (NLP) and machine learning to 2M+ feedback records from organisations on Culture Amp's platform.
+
+**Methods**
+
+- **Sentiment:** Classified how positive or negative feedback was, using a RoBERTa language model that agreed with human coders 89.9% of the time.
+- **Emotions:** Identified 28 emotions, such as gratitude or admiration, using a language model trained on emotion-labelled text (GoEmotions).
+- **Agentic and communal language:** Measured how close feedback was to agentic words (such as "ambitious") or communal words (such as "supportive"), using sentence embeddings.
+- **Distinctive words:** Identified which words appeared more in feedback to women compared to men, using weighted log-odds.
+- **Topics:** Identified the main themes in feedback by grouping words that often appear together (non-negative matrix factorisation, NMF).
+- **Style:** Measured length, hedging, word variety and grammatical complexity.
+
+**Data and privacy**
+
+- Results are shown as aggregates only. No feedback texts or individual records are shared.
+
+**Credits**
+
+- PhD research at the [University of Melbourne](https://www.unimelb.edu.au/){target="_blank"}, in a research partnership with [Culture Amp](https://www.cultureamp.com/){target="_blank"}. Co-supervised by the University of Melbourne ([Computing and Information Systems](https://cis.unimelb.edu.au/){target="_blank"}) and [UC Berkeley Haas](https://haas.berkeley.edu/){target="_blank"}.
+:::
+
+::: {.card .spacer width="25%"}
+:::
+
+## Bottom space {height=100px}
+
+::: {.card .spacer}
+:::
