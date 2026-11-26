@@ -1,7 +1,7 @@
 ---
 title: "Performance Reviews at Scale with NLP"
 subtitle: "Interactive dashboard"
-description: "My PhD research with Culture Amp: using NLP to analyse 2M+ performance feedback records and compare them by gender."
+description: "My PhD research with Culture Amp: using NLP to analyse performance feedback records and test whether women and men are described differently."
 categories: [NLP, People Analytics, Machine learning]
 image: ../images/culture-amp.png
 jupyter: portfolio
@@ -41,7 +41,7 @@ dict(icon="calendar3", color="#9A36B2", value="2021–2025")
 dict(icon="cpu", color="#9A36B2", value="Tech (49%)")
 ```
 
-## Results {height=600px}
+## Results {height=650px}
 
 ::: {.card .spacer width="10%"}
 :::
