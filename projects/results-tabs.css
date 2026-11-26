@@ -33,7 +33,8 @@
 }
 .fbr-dot.active { background: #9A36B2; }
 
-/* Trait grid in Finding 1: 2 x 2 with a cross between the quadrants.
+/* ---------- Trait grid in Finding 1 ----------
+   2 x 2 with a cross between the quadrants.
    The dashboard makes every block a flex container, so the layout is set with !important. */
 .fbr-grid {
   display: grid !important;
@@ -55,27 +56,141 @@
 .fbr-cell-tr { border-bottom: 1px solid #CED4DA; }
 .fbr-cell-bl { border-right: 1px solid #CED4DA; }
 
-/* ---------- Method slider in Finding 1 ---------- */
+/* ---------- Method slider (all findings) ---------- */
 .fbm { display: flex !important; flex-direction: column; flex: 1; font-size: 0.85rem; }
 .fbm > div, .fbm-panels > div, .fbm-panel > div:not(.fbr-grid) { min-height: 0; }
 .fbm-panels { flex: 1; display: block !important; }
 .fbm-panel { display: none; }
 .fbm-step-title { font-weight: 700; color: #9A36B2; margin: 0 0 0.35rem 0; font-size: 0.9rem; }
 .fbm-text { color: #495057; margin: 0 0 0.6rem 0; line-height: 1.45; }
-.fbm-note { color: #8A8A8A; font-style: italic; font-size: 0.75rem; margin: 0; }
-.fbm-example {
-  display: block !important; background: #FAF6FC; border-radius: 6px; padding: 0.6rem 0.75rem;
-  margin: 0 0 0.6rem 0; color: #343A40; line-height: 1.5;
-}
-.fbm-example mark { background: #DFC9EA; padding: 0 0.15rem; border-radius: 3px; }
-.fbm-example code { color: #3F2A7A; background: none; font-size: 0.8rem; }
+.fbm-note { color: #8A8A8A; font-style: italic; font-size: inherit; margin: 0; }
 .fbm-arrow { color: #9A36B2; margin: 0 0.3rem; }
 .fbm-list { margin: 0 0 0.6rem 0; padding-left: 1.1rem; color: #495057; line-height: 1.45; }
 
 .fbm-slider { display: block !important; margin-top: 0.5rem; }
 .fbm-slider input[type=range] { width: 100%; accent-color: #9A36B2; cursor: pointer; }
-.fbm-labels { display: flex !important; flex-direction: row !important; justify-content: space-between; font-size: 0.7rem; color: #8A8A8A; }
+.fbm-labels { display: flex !important; flex-direction: row !important; justify-content: space-between; font-size: 0.85rem; color: #8A8A8A; }
 .fbm-labels span { cursor: pointer; text-align: center; flex: 1; }
 .fbm-labels span:first-child { text-align: left; }
 .fbm-labels span:last-child { text-align: right; }
 .fbm-labels span.active { color: #9A36B2; font-weight: 700; }
+
+/* ---------- Keep every step starting at the same height ----------
+   The dashboard lets every block grow to fill space, so the heading grew when a step
+   had less text. Fixed-size heading, counter, navigation and slider; only the step area grows. */
+.fbr-counter, .fbr-title, .fbr-nav, .fbm-slider { flex: 0 0 auto !important; }
+.fbr-step { justify-content: flex-start !important; }
+.fbm { flex: 1 1 auto !important; justify-content: flex-start !important; }
+.fbm-panels { flex: 1 1 auto !important; overflow-y: auto; }
+
+/* ---------- Example boxes ---------- */
+.fbm-example {
+  display: block !important; background: #FAF6FC; border-radius: 6px; padding: 0.6rem 0.75rem;
+  margin: 0 0 0.6rem 0; color: #343A40; line-height: 1.5;
+}
+.fbm-example + .fbm-example { margin-top: 0.6rem; }
+.fbm-example code { color: #3F2A7A; background: none; font-size: 0.8rem; }
+
+/* Highlighted words in example boxes, with hover effect */
+.fbm-example mark {
+  background: #DFC9EA;
+  padding: 0 0.15rem;
+  border-radius: 3px;
+  cursor: default;
+  transition: background-color 0.2s ease, color 0.2s ease,
+              box-shadow 0.2s ease, transform 0.2s ease;
+}
+.fbm-example mark:hover {
+  background-color: #9A36B2;
+  color: #ffffff;
+  box-shadow: 0 0 0 3px rgba(154, 54, 178, 0.25);
+  transform: translateY(-1px);
+}
+
+/* Small label at the top of an example box */
+.fbm-label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #9A36B2;
+  margin-bottom: 0.25rem;
+}
+
+/* Boxes that light up on hover */
+.fbm-result {
+  cursor: default;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+.fbm-result:hover {
+  background-color: rgba(154, 54, 178, 0.18);
+  box-shadow: 0 4px 12px rgba(154, 54, 178, 0.25);
+  transform: translateY(-2px);
+}
+
+/* ---------- Distinctive words as ranked cards (Finding 2, Steps 5–6) ---------- */
+.lo-head {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #9A36B2;
+  margin: 0.75rem 0 0.4rem;
+}
+
+.lo-list {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0.5rem;
+  margin: 0 0 0.75rem;
+}
+
+.lo-item {
+  display: grid !important;
+  grid-template-columns: 2rem 1fr;
+  align-items: center;
+  gap: 0.75rem;
+  background: #FAF6FC;
+  border-radius: 6px;
+  padding: 0.6rem 0.75rem;
+}
+
+.lo-rank {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background: #9A36B2;
+  color: #fff;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.lo-body {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0.15rem;
+  text-align: left;
+}
+
+.lo-word {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #3F2A7A;
+}
+
+.lo-desc {
+  font-size: 0.85rem;
+  color: #495057;
+  line-height: 1.4;
+}
+
+.lo-ex mark {
+  background: #DFC9EA;
+  color: inherit;
+  padding: 0 0.15rem;
+  border-radius: 3px;
+}

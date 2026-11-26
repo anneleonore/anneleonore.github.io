@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="description" content="My PhD research with Culture Amp: using NLP to analyse 2M+ performance feedback records and compare them by gender.">
+<meta name="description" content="My PhD research with Culture Amp: using NLP to analyse performance feedback records and test whether women and men are described differently.">
 
 <title>Performance Reviews at Scale with NLP – Noor de Bruijn</title>
 <style>
@@ -168,7 +168,7 @@ ul.task-list li input[type="checkbox"] {
 <!-- margin-sidebar -->
 <!-- main -->
 
-<div class="bslib-grid-item html-fill-item bslib-grid" data-layout="flow" style="display: grid; grid-template-rows: 180px 600px 450px 700px 100px; grid-auto-columns: minmax(0, 1fr);">
+<div class="bslib-grid-item html-fill-item bslib-grid" data-layout="flow" style="display: grid; grid-template-rows: 180px 650px 450px 700px 100px; grid-auto-columns: minmax(0, 1fr);">
 <div class="bslib-grid" style="display: grid; grid-template-columns: minmax(3em, 1fr) minmax(3em, 1fr) minmax(3em, 1fr) minmax(3em, 1fr);
 grid-auto-rows: minmax(0, 1fr);">
 <div class="card valuebox cell bslib-card html-fill-container bslib-value-box showcase-left-center" data-bslib-card-init="" data-require-bs-caller="card()" style=" background: #9A36B2;">
@@ -254,14 +254,14 @@ Results
 <div class="fbr html-fill-item html-fill-container">
 <div class="fbr-step html-fill-item html-fill-container">
 <div class="fbr-title html-fill-item html-fill-container">
-<p>Managers describe men in more agentic and less communal terms than they describe women</p>
+<p>Feedback to men: more positive on getting ahead, more negative on getting along</p>
 </div>
 <div class="fbm html-fill-item html-fill-container">
   <div class="fbm-panels html-fill-item html-fill-container">
 
     <div class="fbm-panel html-fill-item html-fill-container">
       <p class="fbm-step-title">Step 1 · Trait words</p>
-      <p class="fbm-text">Traits from validated psychology scales, sorted into four groups.</p>
+      <p class="fbm-text">Traits used in psychology research to measure agency and communion, sorted by type (agentic or communal) and tone (positive or negative).</p>
       <div class="fbr-grid html-fill-item html-fill-container">
         <div class="html-fill-item html-fill-container"></div>
         <div class="fbr-grid-head html-fill-item html-fill-container">Agentic</div>
@@ -276,41 +276,68 @@ Results
     </div>
 
     <div class="fbm-panel html-fill-item html-fill-container">
-      <p class="fbm-step-title">Step 2 · Turn the traits into numbers</p>
-      <p class="fbm-text">Each trait is placed in a sentence, and a language model (BERT) turns the trait into a numerical representation of its meaning.</p>
+      <p class="fbm-step-title">Step 2 · Create reference points for the traits</p>
+      <p class="fbm-text">Computers can’t understand words directly, so a language model (BERT) reads each trait in the same sentence and turns every word into a long list of numbers, an embedding.</p>
       <div class="fbm-example html-fill-item html-fill-container">
         In the review, the manager described this person as <mark>ambitious</mark> <span class="fbm-arrow">→</span> <code>[0.71, −0.36, 0.15, …]</code>
       </div>
-      <p class="fbm-text">Averaging within each group gives four reference points: positive and negative agency, positive and negative communion.</p>
+      <p class="fbm-text">We then average the trait embeddings within each group. This gives four reference points:</p>
+      <ol class="fbm-list">
+        <li>Positive agency</li>
+        <li>Negative agency</li>
+        <li>Positive communion</li>
+        <li>Negative communion</li>
+      </ol>
     </div>
 
     <div class="fbm-panel html-fill-item html-fill-container">
-      <p class="fbm-step-title">Step 3 · Find every reference to the employee</p>
-      <p class="fbm-text">In each piece of feedback, every word that refers to the employee is turned into numbers in the same way. The numbers reflect how the employee is described in that sentence.</p>
+      <p class="fbm-step-title">Step 3 · Create embeddings for employee mentions</p>
+      <p class="fbm-text">Next, we turn to the feedback itself and do the same. BERT reads each sentence, and we keep the embedding of every word that refers to the employee, such as "she", "he", "you" or "your". These embeddings capture the context in which the employee is mentioned.</p>
       <div class="fbm-example html-fill-item html-fill-container">
         "<mark>She</mark> should be more confident when presenting to clients." <span class="fbm-arrow">→</span> <code>[0.18, 0.42, −0.09, …]</code>
       </div>
-      <p class="fbm-note">Example sentence, not from the data.</p>
+      <div class="fbm-example html-fill-item html-fill-container">
+        "<mark>He</mark> could involve his team more in decisions." <span class="fbm-arrow">→</span> <code>[0.64, −0.21, 0.33, …]</code>
+      </div>
+      <p class="fbm-note">Example sentences, not from the data.</p>
     </div>
 
     <div class="fbm-panel html-fill-item html-fill-container">
-      <p class="fbm-step-title">Step 4 · Compare with the traits</p>
-      <p class="fbm-text">Each reference is compared with the four reference points. This gives two scores:</p>
-      <ul class="fbm-list">
-        <li><strong>Agency score:</strong> how much closer it is to positive than to negative agentic traits</li>
-        <li><strong>Communion score:</strong> how much closer it is to positive than to negative communal traits</li>
-      </ul>
+      <p class="fbm-step-title">Step 4 · Compare with the reference points</p>
+      <p class="fbm-text">We measure how close each employee mention is in meaning to the four reference points, using <a href="https://www.ibm.com/think/topics/cosine-similarity" target="_blank"><strong>cosine similarity</strong></a>. For each mention, this gives four scores, which we combine into two net scores:</p>
+      <div class="fbm-example fbm-result html-fill-item html-fill-container">
+        <strong>Net agency</strong> <span class="fbm-arrow">=</span> positive agency − negative agency
+      </div>
+      <div class="fbm-example fbm-result html-fill-item html-fill-container">
+        <strong>Net communion</strong> <span class="fbm-arrow">=</span> positive communion − negative communion
+      </div>
+      <p class="fbm-text">A higher score means the mention is closer in meaning to positive than to negative traits.</p>
     </div>
 
     <div class="fbm-panel html-fill-item html-fill-container">
-      <p class="fbm-step-title">Step 5 · Compare men and women</p>
-      <p class="fbm-text">The scores are averaged per feedback entry and compared between male and female employees, taking the manager's gender into account.</p>
-      <p class="fbm-text">To rule out that "he" and "she" simply differ as words, the comparison is repeated with gender-neutral references only ("you", "your").</p>
+      <p class="fbm-step-title">Step 5 · Test for gender differences</p>
+      <p class="fbm-text">We average the net scores of all employee mentions within each feedback entry, then run two tests:</p>
+      <div class="fbm-example html-fill-item html-fill-container">
+        <span class="fbm-label">Main test</span>
+        Compare female and male employees, using multilevel models that also account for the manager’s gender.
+      </div>
+      <div class="fbm-example html-fill-item html-fill-container">
+        <span class="fbm-label">Robustness check</span>
+        Repeat the test using only mentions that are the same for women and men, such as “you” and “your”. This rules out that “he” and “she” simply differ as words.
+      </div>
     </div>
 
     <div class="fbm-panel html-fill-item html-fill-container">
       <p class="fbm-step-title">Step 6 · Result</p>
-      <div class="placeholder-chart html-fill-item html-fill-container">Chart: agency and communion scores by employee gender</div>
+      <p class="fbm-text">Compared to feedback to women, feedback to men is more positive on getting ahead (agency) and less positive on getting along (communion).</p>
+      <div class="fbm-example fbm-result html-fill-item html-fill-container">
+        <strong>Net agency:</strong> higher for men (β = 0.13, 95% CI [0.11, 0.16])
+      </div>
+      <div class="fbm-example fbm-result html-fill-item html-fill-container">
+        <strong>Net communion:</strong> lower for men (β = −0.19, 95% CI [−0.21, −0.16])
+      </div>
+      <p class="fbm-text">The differences are small, hold for gender-neutral mentions, and do not depend on the manager's gender.</p>
+      <p class="fbm-note">"Positive" and "negative" refer to closeness to positive or negative traits, not to praise or criticism..</p>
     </div>
 
   </div>
@@ -318,7 +345,7 @@ Results
   <div class="fbm-slider html-fill-item html-fill-container">
     <input type="range" min="1" max="6" step="1" value="1" aria-label="Method step">
     <div class="fbm-labels html-fill-item html-fill-container">
-      <span>Traits</span><span>Numbers</span><span>References</span><span>Compare</span><span>Men vs women</span><span>Result</span>
+      <span>Traits</span><span>Reference points</span><span>Mentions</span><span>Net scores</span><span>Gender differences</span><span>Result</span>
     </div>
   </div>
 </div>
@@ -334,7 +361,9 @@ Results
       <p class="fbm-step-title">Step 1 · Find the employee</p>
       <p class="fbm-text">In every sentence, the words referring to the employee are located: "she", "he", "you", "your" or the employee's (anonymised) name.</p>
       <div class="fbm-example html-fill-item html-fill-container">
-        "<mark>She</mark> should feel more confident when presenting."<br>
+        "<mark>She</mark> should feel more confident when presenting."
+      </div>
+      <div class="fbm-example html-fill-item html-fill-container">
         "<mark>He</mark> can improve his planning."
       </div>
       <p class="fbm-note">Example sentences, not from the data.</p>
@@ -345,33 +374,206 @@ Results
       <p class="fbm-text">A transformer-based grammar parser (spaCy) finds the words that describe the employee: <strong>adjectives</strong> about them and <strong>verbs</strong> they are the subject or object of.</p>
       <div class="fbm-example html-fill-item html-fill-container">
         "She should <mark>feel</mark> more <mark>confident</mark> when presenting."
-        <span class="fbm-arrow">→</span> verb: <em>feel</em> · adjective: <em>confident</em><br>
+        <span class="fbm-arrow">→</span> verb: <em>feel</em> · adjective: <em>confident</em>
+      </div>
+      <div class="fbm-example html-fill-item html-fill-container">
         "He can <mark>improve</mark> his planning."
         <span class="fbm-arrow">→</span> verb: <em>improve</em>
       </div>
     </div>
 
     <div class="fbm-panel html-fill-item html-fill-container">
-      <p class="fbm-step-title">Step 3 · Clean the words</p>
+      <p class="fbm-step-title">Step 3 · Standardise the words</p>
       <p class="fbm-text">Each word is reduced to its base form, so variants count as one word.</p>
       <div class="fbm-example html-fill-item html-fill-container">
         feels, feeling, felt <span class="fbm-arrow">→</span> <em>feel</em>
       </div>
+      <div class="fbm-example html-fill-item html-fill-container">
+        improves, improving, improved <span class="fbm-arrow">→</span> <em>improve</em>
+      </div>
+      <div class="fbm-example html-fill-item html-fill-container">
+        leads, leading, led <span class="fbm-arrow">→</span> <em>lead</em>
+      </div>
       <p class="fbm-text">Spelling errors are corrected, and words used fewer than 10 times are left out.</p>
+      <div class="fbm-example html-fill-item html-fill-container">
+        comunicate <span class="fbm-arrow">→</span> <em>communicate</em>
+      </div>
     </div>
 
     <div class="fbm-panel html-fill-item html-fill-container">
       <p class="fbm-step-title">Step 4 · Find the distinctive words</p>
-      <p class="fbm-text">For each word, a statistical method (weighted log-odds) compares how often it appears in feedback to women and to men, corrected so that rare words don't look more distinctive than they are.</p>
+      <p class="fbm-text">For each word, a statistical method (weighted log-odds) compares how often it appears in feedback to women and to men. It corrects for how common each word is, so rare words don't look more distinctive than they are.</p>
+      <div class="fbm-example fbm-result fbm-women html-fill-item html-fill-container">
+        <strong>Positive score</strong> <span class="fbm-arrow">→</span> more typical of feedback to women
+      </div>
+      <div class="fbm-example fbm-result fbm-men html-fill-item html-fill-container">
+        <strong>Negative score</strong> <span class="fbm-arrow">→</span> more typical of feedback to men
+      </div>
+    </div>
+
+    <div class="fbm-panel html-fill-item html-fill-container">
+      <p class="fbm-step-title">Step 5 · Result: feedback to women</p>
+      <p class="fbm-text">Compared to feedback to men, feedback to women more often addresses confidence, feelings and encouragement.</p>
+      <p class="lo-head">Most distinctive words for women</p>
+      <div class="lo-list html-fill-item html-fill-container">
+        <div class="lo-item fbm-result html-fill-item html-fill-container">
+          <span class="lo-rank">1</span>
+          <div class="lo-body html-fill-item html-fill-container">
+            <span class="lo-word">confident</span>
+            <span class="lo-ex">"She should be more <mark>confident</mark> when speaking with clients."</span>
+          </div>
+        </div>
+        <div class="lo-item fbm-result html-fill-item html-fill-container">
+          <span class="lo-rank">2</span>
+          <div class="lo-body html-fill-item html-fill-container">
+            <span class="lo-word">feel</span>
+            <span class="lo-ex">"You will <mark>feel</mark> more at ease once you know the process."</span>
+          </div>
+        </div>
+        <div class="lo-item fbm-result html-fill-item html-fill-container">
+          <span class="lo-rank">3</span>
+          <div class="lo-body html-fill-item html-fill-container">
+            <span class="lo-word">encourage</span>
+            <span class="lo-ex">"I <mark>encourage</mark> her to share her ideas in meetings."</span>
+          </div>
+        </div>
+      </div>
+      <p class="fbm-note">Ranked from most to least distinctive.</p>
+    </div>
+
+    <div class="fbm-panel html-fill-item html-fill-container">
+      <p class="fbm-step-title">Step 6 · Result: feedback to men</p>
+      <p class="fbm-text">Compared to feedback to women, feedback to men more often addresses what he should improve or needs to change.</p>
+      <p class="lo-head">Most distinctive words for men</p>
+      <div class="lo-list html-fill-item html-fill-container">
+        <div class="lo-item fbm-result html-fill-item html-fill-container">
+          <span class="lo-rank">1</span>
+          <div class="lo-body html-fill-item html-fill-container">
+            <span class="lo-word">improve</span>
+            <span class="lo-ex">"He can <mark>improve</mark> how he plans his week."</span>
+          </div>
+        </div>
+        <div class="lo-item fbm-result html-fill-item html-fill-container">
+          <span class="lo-rank">2</span>
+          <div class="lo-body html-fill-item html-fill-container">
+            <span class="lo-word">need</span>
+            <span class="lo-ex">"He <mark>needs</mark> to update the team more often."</span>
+          </div>
+        </div>
+        <div class="lo-item fbm-result html-fill-item html-fill-container">
+          <span class="lo-rank">3</span>
+          <div class="lo-body html-fill-item html-fill-container">
+            <span class="lo-word">tend</span>
+            <span class="lo-ex">"You <mark>tend</mark> to take on too many tasks at once."</span>
+          </div>
+        </div>
+      </div>
+      <p class="fbm-note">Ranked from most to least distinctive.</p>
+    </div>
+
+  </div>
+
+  <div class="fbm-slider html-fill-item html-fill-container">
+    <input type="range" min="1" max="6" step="1" value="1" aria-label="Method step">
+    <div class="fbm-labels html-fill-item html-fill-container">
+      <span>Employee</span><span>Grammar</span><span>Standardise</span><span>Compare</span><span>Women</span><span>Men</span>
+    </div>
+  </div>
+</div>
+</div>
+<div class="fbr-step html-fill-item html-fill-container">
+<div class="fbr-title html-fill-item html-fill-container">
+<p>For women, the tone of feedback says less about how they were rated.</p>
+</div>
+<div class="fbm html-fill-item html-fill-container">
+  <div class="fbm-panels html-fill-item html-fill-container">
+
+    <div class="fbm-panel html-fill-item html-fill-container">
+      <p class="fbm-step-title">Step 1 · Split into sentences</p>
+      <p class="fbm-text">Each piece of feedback is split into sentences, and very short sentences (fewer than five words) are left out. This gives about 170,000 sentences.</p>
+    </div>
+
+    <div class="fbm-panel html-fill-item html-fill-container">
+      <p class="fbm-step-title">Step 2 · Measure the sentiment</p>
+      <p class="fbm-text">A language model trained for sentiment (RoBERTa) reads each sentence and estimates how likely it is to be positive, neutral or negative.</p>
+      <div class="fbm-example html-fill-item html-fill-container">
+        "She has made great progress this year."<br>
+        <span class="fbm-arrow">→</span> positive 0.92 · neutral 0.07 · negative 0.01
+      </div>
+      <p class="fbm-note">Example sentence and scores, not from the data.</p>
+    </div>
+
+    <div class="fbm-panel html-fill-item html-fill-container">
+      <p class="fbm-step-title">Step 3 · Check the model</p>
+      <p class="fbm-text">The model was not trained on workplace feedback, so it was tested first: on 198 sentences coded by hand, it agreed with the human coder 90% of the time.</p>
+    </div>
+
+    <div class="fbm-panel html-fill-item html-fill-container">
+      <p class="fbm-step-title">Step 4 · One score per feedback entry</p>
+      <p class="fbm-text">For each sentence, the sentiment score is the chance it is positive minus the chance it is negative (from −1 to +1). These are averaged per feedback entry.</p>
+      <div class="fbm-example html-fill-item html-fill-container">
+        0.92 − 0.01 <span class="fbm-arrow">→</span> sentiment score <strong>+0.91</strong>
+      </div>
+    </div>
+
+    <div class="fbm-panel html-fill-item html-fill-container">
+      <p class="fbm-step-title">Step 5 · Link to the performance rating</p>
+      <p class="fbm-text">For about 19,000 entries, the manager also gave a numerical rating (1 to 4). The analysis tests whether more positive feedback goes together with a higher rating, and whether that link differs for women and men.</p>
+    </div>
+
+    <div class="fbm-panel html-fill-item html-fill-container">
+      <p class="fbm-step-title">Step 6 · Result</p>
+      <div class="placeholder-chart html-fill-item html-fill-container">Chart: sentiment score by performance rating, for women and men</div>
+    </div>
+
+  </div>
+
+  <div class="fbm-slider html-fill-item html-fill-container">
+    <input type="range" min="1" max="6" step="1" value="1" aria-label="Method step">
+    <div class="fbm-labels html-fill-item html-fill-container">
+      <span>Sentences</span><span>Sentiment</span><span>Check</span><span>Score</span><span>Ratings</span><span>Result</span>
+    </div>
+  </div>
+</div>
+</div>
+<div class="fbr-step html-fill-item html-fill-container">
+<div class="fbr-title html-fill-item html-fill-container">
+<p>Female managers write longer and warmer feedback, especially at first</p>
+</div>
+<div class="fbm html-fill-item html-fill-container">
+  <div class="fbm-panels html-fill-item html-fill-container">
+
+    <div class="fbm-panel html-fill-item html-fill-container">
+      <p class="fbm-step-title">Step 1 · Compare the writers</p>
+      <p class="fbm-text">Here the focus is on <strong>who writes</strong> the feedback: female or male managers. The analysis takes the employee's gender into account, so the two effects are not mixed up.</p>
+    </div>
+
+    <div class="fbm-panel html-fill-item html-fill-container">
+      <p class="fbm-step-title">Step 2 · Measure the length</p>
+      <p class="fbm-text">A language-processing tool (spaCy) counts the words in each piece of feedback, and the average length is compared between female and male managers.</p>
+    </div>
+
+    <div class="fbm-panel html-fill-item html-fill-container">
+      <p class="fbm-step-title">Step 3 · Measure the warmth</p>
+      <p class="fbm-text">Two language models read every sentence:</p>
       <ul class="fbm-list">
-        <li><strong>Positive score:</strong> more typical of feedback to women</li>
-        <li><strong>Negative score:</strong> more typical of feedback to men</li>
+        <li><strong>Sentiment</strong> (RoBERTa): how positive or negative the feedback is</li>
+        <li><strong>Emotions</strong> (GoEmotions): which of 28 emotions it expresses, such as caring or admiration</li>
       </ul>
+      <div class="fbm-example html-fill-item html-fill-container">
+        "I want to support you as you grow into this role." <span class="fbm-arrow">→</span> positive · caring
+      </div>
+      <p class="fbm-note">Example sentence, not from the data.</p>
+    </div>
+
+    <div class="fbm-panel html-fill-item html-fill-container">
+      <p class="fbm-step-title">Step 4 · Follow the same pairs over time</p>
+      <p class="fbm-text">For about 2,200 manager–employee pairs, feedback was available for three review cycles in a row. Following these pairs shows whether the differences between female and male managers stay the same, grow or fade over time.</p>
     </div>
 
     <div class="fbm-panel html-fill-item html-fill-container">
       <p class="fbm-step-title">Step 5 · Result</p>
-      <div class="placeholder-chart html-fill-item html-fill-container">Chart: most distinctive words in feedback to women and men</div>
+      <div class="placeholder-chart html-fill-item html-fill-container">Chart: feedback length and positivity across three review cycles, by manager gender</div>
     </div>
 
   </div>
@@ -379,25 +581,9 @@ Results
   <div class="fbm-slider html-fill-item html-fill-container">
     <input type="range" min="1" max="5" step="1" value="1" aria-label="Method step">
     <div class="fbm-labels html-fill-item html-fill-container">
-      <span>Employee</span><span>Grammar</span><span>Clean</span><span>Compare</span><span>Result</span>
+      <span>Writers</span><span>Length</span><span>Warmth</span><span>Over time</span><span>Result</span>
     </div>
   </div>
-</div>
-</div>
-<div class="fbr-step html-fill-item html-fill-container">
-<div class="fbr-title html-fill-item html-fill-container">
-<p>Praise matches high ratings less closely for women</p>
-</div>
-<div class="placeholder-chart html-fill-item html-fill-container">
-<p>Chart: link between positive feedback and ratings, by employee gender</p>
-</div>
-</div>
-<div class="fbr-step html-fill-item html-fill-container">
-<div class="fbr-title html-fill-item html-fill-container">
-<p>Female managers write longer, more caring feedback</p>
-</div>
-<div class="placeholder-chart html-fill-item html-fill-container">
-<p>Chart: feedback length and emotions by manager gender</p>
 </div>
 </div>
 </div>
