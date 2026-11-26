@@ -62,7 +62,7 @@
 .fbm-panel { display: none; }
 .fbm-step-title { font-weight: 700; color: #9A36B2; margin: 0 0 0.35rem 0; font-size: 0.9rem; }
 .fbm-text { color: #495057; margin: 0 0 0.6rem 0; line-height: 1.45; }
-.fbm-note { color: #8A8A8A; font-style: italic; font-size: 0.75rem; margin: 0; }
+.fbm-note { color: #8A8A8A; font-style: italic; font-size: inherit; margin: 0; }
 .fbm-example {
   display: block !important; background: #FAF6FC; border-radius: 6px; padding: 0.6rem 0.75rem;
   margin: 0 0 0.6rem 0; color: #343A40; line-height: 1.5;
@@ -79,3 +79,11 @@
 .fbm-labels span:first-child { text-align: left; }
 .fbm-labels span:last-child { text-align: right; }
 .fbm-labels span.active { color: #9A36B2; font-weight: 700; }
+
+/* ---------- Keep every step starting at the same height ----------
+   The dashboard lets every block grow to fill space, so the heading grew when a step
+   had less text. Fixed-size heading, counter, navigation and slider; only the step area grows. */
+.fbr-counter, .fbr-title, .fbr-nav, .fbm-slider { flex: 0 0 auto !important; }
+.fbr-step { justify-content: flex-start !important; }
+.fbm { flex: 1 1 auto !important; justify-content: flex-start !important; }
+.fbm-panels { flex: 1 1 auto !important; overflow-y: auto; }

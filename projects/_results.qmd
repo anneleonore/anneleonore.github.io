@@ -2,7 +2,7 @@
 
 ::: {.fbr-step}
 ::: {.fbr-title}
-Managers describe men in more agentic and less communal terms than they describe women
+Feedback to men: more positive on getting ahead, more negative on getting along
 :::
 
 ```{=html}
@@ -11,7 +11,7 @@ Managers describe men in more agentic and less communal terms than they describe
 
     <div class="fbm-panel">
       <p class="fbm-step-title">Step 1 · Trait words</p>
-      <p class="fbm-text">Traits from validated psychology scales, sorted into four groups.</p>
+      <p class="fbm-text">Traits used in psychology research to measure agency and communion, sorted by type (agentic or communal) and tone (positive or negative).</p>
       <div class="fbr-grid">
         <div></div>
         <div class="fbr-grid-head">Agentic</div>
@@ -26,17 +26,23 @@ Managers describe men in more agentic and less communal terms than they describe
     </div>
 
     <div class="fbm-panel">
-      <p class="fbm-step-title">Step 2 · Turn the traits into numbers</p>
-      <p class="fbm-text">Each trait is placed in a sentence, and a language model (BERT) turns the trait into a numerical representation of its meaning.</p>
+      <p class="fbm-step-title">Step 2 · Create reference points for the traits</p>
+      <p class="fbm-text">Computers can’t understand words directly, so a language model (BERT) reads each trait in the same sentence (below) and turns every word into a long list of numbers, an embedding.</p>
       <div class="fbm-example">
         In the review, the manager described this person as <mark>ambitious</mark> <span class="fbm-arrow">→</span> <code>[0.71, −0.36, 0.15, …]</code>
       </div>
-      <p class="fbm-text">Averaging within each group gives four reference points: positive and negative agency, positive and negative communion.</p>
+      <p class="fbm-text">We keep the trait's embedding and average these within each group. This gives four reference points:</p>
+      <ol class="fbm-list">
+        <li>Positive agency</li>
+        <li>Negative agency</li>
+        <li>Positive communion</li>
+        <li>Negative communion</li>
+      </ol>
     </div>
 
     <div class="fbm-panel">
-      <p class="fbm-step-title">Step 3 · Find every reference to the employee</p>
-      <p class="fbm-text">In each piece of feedback, every word that refers to the employee is turned into numbers in the same way. The numbers reflect how the employee is described in that sentence.</p>
+      <p class="fbm-step-title">Step 3 · Create embeddings for employee mentions</p>
+      <p class="fbm-text">Next, we turn to the feedback itself and do the same. BERT reads each sentence, and we keep the embedding of every word that refers to the employee, such as "she", "he", "you" or "your". These embeddings capture the context in which the employee is mentioned.</p>
       <div class="fbm-example">
         "<mark>She</mark> should be more confident when presenting to clients." <span class="fbm-arrow">→</span> <code>[0.18, 0.42, −0.09, …]</code>
       </div>
@@ -44,23 +50,29 @@ Managers describe men in more agentic and less communal terms than they describe
     </div>
 
     <div class="fbm-panel">
-      <p class="fbm-step-title">Step 4 · Compare with the traits</p>
-      <p class="fbm-text">Each reference is compared with the four reference points. This gives two scores:</p>
+      <p class="fbm-step-title">Step 4 · Compare with the reference points</p>
+      <p class="fbm-text">We compare each employee mention with the four reference points using <a href="https://www.ibm.com/think/topics/cosine-similarity" target="_blank"><strong>cosine similarity</strong></a>, a measure of how close two embeddings are in meaning. This gives four similarity scores per mention, one for each reference point. We combine them into two net scores:</p>
       <ul class="fbm-list">
-        <li><strong>Agency score:</strong> how much closer it is to positive than to negative agentic traits</li>
-        <li><strong>Communion score:</strong> how much closer it is to positive than to negative communal traits</li>
+        <li><strong>Net agency score:</strong> the cosine similarity to positive agentic traits minus the similarity to negative agentic traits. The higher the score, the more similar the mention is in meaning to positive rather than negative agentic traits.</li>
+        <li><strong>Net communion score:</strong> the cosine similarity to positive communal traits minus the similarity to negative communal traits. The higher the score, the more similar the mention is in meaning to positive rather than negative communal traits.</li>
       </ul>
     </div>
 
     <div class="fbm-panel">
-      <p class="fbm-step-title">Step 5 · Compare men and women</p>
-      <p class="fbm-text">The scores are averaged per feedback entry and compared between male and female employees, taking the manager's gender into account.</p>
-      <p class="fbm-text">To rule out that "he" and "she" simply differ as words, the comparison is repeated with gender-neutral references only ("you", "your").</p>
+      <p class="fbm-step-title">Step 5 · Test for gender differences</p>
+      <p class="fbm-text">We average the scores per feedback entry and compare them between male and female employees using multilevel models that also account for the manager’s gender.</p>
+      <p class="fbm-text">To rule out that “he” and “she” simply differ as words, we repeat the analysis using only mentions that are the same for men and women, such as “you” and “your”.</p>
     </div>
 
     <div class="fbm-panel">
       <p class="fbm-step-title">Step 6 · Result</p>
-      <div class="placeholder-chart">Chart: agency and communion scores by employee gender</div>
+      <p class="fbm-text">Feedback to men scores higher on net agency and lower on net communion than feedback to women. In other words, feedback to men is more positive on getting ahead, and more negative on getting along.</p>
+      <ul class="fbm-list">
+        <li><strong>Net agency:</strong> higher for men (β = 0.13, 95% CI [0.11, 0.16])</li>
+        <li><strong>Net communion:</strong> lower for men (β = −0.19, 95% CI [−0.21, −0.16])</li>
+      </ul>
+      <p class="fbm-text">These are small to moderate differences, measured in standard deviations. They hold when only gender-neutral mentions are used, and the manager's gender makes no meaningful difference.</p>
+      <p class="fbm-note">"Positive" and "negative" refer to how close the language is to positive or negative traits, not to whether the feedback is praise or criticism.</p>
     </div>
 
   </div>
@@ -68,7 +80,7 @@ Managers describe men in more agentic and less communal terms than they describe
   <div class="fbm-slider">
     <input type="range" min="1" max="6" step="1" value="1" aria-label="Method step">
     <div class="fbm-labels">
-      <span>Traits</span><span>Numbers</span><span>References</span><span>Compare</span><span>Men vs women</span><span>Result</span>
+      <span>Traits</span><span>Reference points</span><span>Mentions</span><span>Net scores</span><span>Gender differences</span><span>Result</span>
     </div>
   </div>
 </div>
@@ -142,22 +154,116 @@ Women are told to be more confident, men what to improve
 
 ::: {.fbr-step}
 ::: {.fbr-title}
-Praise matches high ratings less closely for women
+For women, the tone of feedback says less about how they were rated.
 :::
 
-::: {.placeholder-chart}
-Chart: link between positive feedback and ratings, by employee gender
+```{=html}
+<div class="fbm">
+  <div class="fbm-panels">
+
+    <div class="fbm-panel">
+      <p class="fbm-step-title">Step 1 · Split into sentences</p>
+      <p class="fbm-text">Each piece of feedback is split into sentences, and very short sentences (fewer than five words) are left out. This gives about 170,000 sentences.</p>
+    </div>
+
+    <div class="fbm-panel">
+      <p class="fbm-step-title">Step 2 · Measure the sentiment</p>
+      <p class="fbm-text">A language model trained for sentiment (RoBERTa) reads each sentence and estimates how likely it is to be positive, neutral or negative.</p>
+      <div class="fbm-example">
+        "She has made great progress this year."<br>
+        <span class="fbm-arrow">→</span> positive 0.92 · neutral 0.07 · negative 0.01
+      </div>
+      <p class="fbm-note">Example sentence and scores, not from the data.</p>
+    </div>
+
+    <div class="fbm-panel">
+      <p class="fbm-step-title">Step 3 · Check the model</p>
+      <p class="fbm-text">The model was not trained on workplace feedback, so it was tested first: on 198 sentences coded by hand, it agreed with the human coder 90% of the time.</p>
+    </div>
+
+    <div class="fbm-panel">
+      <p class="fbm-step-title">Step 4 · One score per feedback entry</p>
+      <p class="fbm-text">For each sentence, the sentiment score is the chance it is positive minus the chance it is negative (from −1 to +1). These are averaged per feedback entry.</p>
+      <div class="fbm-example">
+        0.92 − 0.01 <span class="fbm-arrow">→</span> sentiment score <strong>+0.91</strong>
+      </div>
+    </div>
+
+    <div class="fbm-panel">
+      <p class="fbm-step-title">Step 5 · Link to the performance rating</p>
+      <p class="fbm-text">For about 19,000 entries, the manager also gave a numerical rating (1 to 4). The analysis tests whether more positive feedback goes together with a higher rating, and whether that link differs for women and men.</p>
+    </div>
+
+    <div class="fbm-panel">
+      <p class="fbm-step-title">Step 6 · Result</p>
+      <div class="placeholder-chart">Chart: sentiment score by performance rating, for women and men</div>
+    </div>
+
+  </div>
+
+  <div class="fbm-slider">
+    <input type="range" min="1" max="6" step="1" value="1" aria-label="Method step">
+    <div class="fbm-labels">
+      <span>Sentences</span><span>Sentiment</span><span>Check</span><span>Score</span><span>Ratings</span><span>Result</span>
+    </div>
+  </div>
+</div>
+```
 :::
-:::
+
 
 ::: {.fbr-step}
 ::: {.fbr-title}
-Female managers write longer, more caring feedback
+Female managers write longer and warmer feedback, especially at first
 :::
 
-::: {.placeholder-chart}
-Chart: feedback length and emotions by manager gender
-:::
+```{=html}
+<div class="fbm">
+  <div class="fbm-panels">
+
+    <div class="fbm-panel">
+      <p class="fbm-step-title">Step 1 · Compare the writers</p>
+      <p class="fbm-text">Here the focus is on <strong>who writes</strong> the feedback: female or male managers. The analysis takes the employee's gender into account, so the two effects are not mixed up.</p>
+    </div>
+
+    <div class="fbm-panel">
+      <p class="fbm-step-title">Step 2 · Measure the length</p>
+      <p class="fbm-text">A language-processing tool (spaCy) counts the words in each piece of feedback, and the average length is compared between female and male managers.</p>
+    </div>
+
+    <div class="fbm-panel">
+      <p class="fbm-step-title">Step 3 · Measure the warmth</p>
+      <p class="fbm-text">Two language models read every sentence:</p>
+      <ul class="fbm-list">
+        <li><strong>Sentiment</strong> (RoBERTa): how positive or negative the feedback is</li>
+        <li><strong>Emotions</strong> (GoEmotions): which of 28 emotions it expresses, such as caring or admiration</li>
+      </ul>
+      <div class="fbm-example">
+        "I want to support you as you grow into this role." <span class="fbm-arrow">→</span> positive · caring
+      </div>
+      <p class="fbm-note">Example sentence, not from the data.</p>
+    </div>
+
+    <div class="fbm-panel">
+      <p class="fbm-step-title">Step 4 · Follow the same pairs over time</p>
+      <p class="fbm-text">For about 2,200 manager–employee pairs, feedback was available for three review cycles in a row. Following these pairs shows whether the differences between female and male managers stay the same, grow or fade over time.</p>
+    </div>
+
+    <div class="fbm-panel">
+      <p class="fbm-step-title">Step 5 · Result</p>
+      <div class="placeholder-chart">Chart: feedback length and positivity across three review cycles, by manager gender</div>
+    </div>
+
+  </div>
+
+  <div class="fbm-slider">
+    <input type="range" min="1" max="5" step="1" value="1" aria-label="Method step">
+    <div class="fbm-labels">
+      <span>Writers</span><span>Length</span><span>Warmth</span><span>Over time</span><span>Result</span>
+    </div>
+  </div>
+</div>
+```
 :::
 
 :::
