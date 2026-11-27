@@ -87,7 +87,7 @@ Feedback to men: more positive on getting ahead, more negative on getting along
         <strong>Net communion:</strong> lower for men (β = −0.19, 95% CI [−0.21, −0.16])
       </div>
       <p class="fbm-text">The differences are small, hold for gender-neutral mentions, and do not depend on the manager's gender.</p>
-      <p class="fbm-note">"Positive" and "negative" refer to closeness to positive or negative traits, not to praise or criticism..</p>
+      <p class="fbm-note">"Positive" and "negative" refer to closeness to positive or negative traits, not to praise or criticism.</p>
     </div>
 
   </div>
@@ -95,7 +95,7 @@ Feedback to men: more positive on getting ahead, more negative on getting along
   <div class="fbm-slider">
     <input type="range" min="1" max="6" step="1" value="1" aria-label="Method step">
     <div class="fbm-labels">
-      <span>Traits</span><span>Reference points</span><span>Mentions</span><span>Net scores</span><span>Gender differences</span><span>Result</span>
+      <span>Traits</span><span>Reference points</span><span>Mentions</span><span>Net scores</span><span>Analysis</span><span>Result</span>
     </div>
   </div>
 </div>
@@ -239,7 +239,7 @@ Women are told to be more confident, men what to improve
 
 ::: {.fbr-step}
 ::: {.fbr-title}
-For women, the tone of feedback says less about how they were rated.
+Women get kind words, but not always a high score
 :::
 
 ```{=html}
@@ -247,41 +247,83 @@ For women, the tone of feedback says less about how they were rated.
   <div class="fbm-panels">
 
     <div class="fbm-panel">
-      <p class="fbm-step-title">Step 1 · Split into sentences</p>
-      <p class="fbm-text">Each piece of feedback is split into sentences, and very short sentences (fewer than five words) are left out. This gives about 170,000 sentences.</p>
-    </div>
-
-    <div class="fbm-panel">
-      <p class="fbm-step-title">Step 2 · Measure the sentiment</p>
-      <p class="fbm-text">A language model trained for sentiment (RoBERTa) reads each sentence and estimates how likely it is to be positive, neutral or negative.</p>
-      <div class="fbm-example">
-        "She has made great progress this year."<br>
-        <span class="fbm-arrow">→</span> positive 0.92 · neutral 0.07 · negative 0.01
+      <p class="fbm-step-title">Step 1 · Prepare the feedback</p>
+      <p class="fbm-text">We use feedback on the employee's development and remove someentries.</p>
+      <div class="fbm-flow" style="margin-top: 1rem;">
+        <div class="fbm-flow-step fbm-result">≈ 59,000 feedback entries</div>
+        <div class="fbm-flow-step fbm-flow-out fbm-result"><span class="fbm-split-icon">✕</span> Non-English entries</div>
+        <div class="fbm-flow-step fbm-flow-out fbm-result"><span class="fbm-split-icon">✕</span> Gender unknown or non-binary</div>
+        <div class="fbm-flow-step fbm-flow-out fbm-result"><span class="fbm-split-icon">✕</span> No mention of the employee</div>
+        <div class="fbm-flow-step fbm-flow-main fbm-result">≈ 35,000 feedback entries</div>
       </div>
-      <p class="fbm-note">Example sentence and scores, not from the data.</p>
     </div>
 
     <div class="fbm-panel">
-      <p class="fbm-step-title">Step 3 · Check the model</p>
-      <p class="fbm-text">The model was not trained on workplace feedback, so it was tested first: on 198 sentences coded by hand, it agreed with the human coder 90% of the time.</p>
+      <p class="fbm-step-title">Step 2 · Break into sentences</p>
+      <p class="fbm-text">Each entry is split into sentences, and sentences with fewer than five words are left out.</p>
+      <div class="fbm-split">
+        <div class="fbm-split-entry fbm-result" style="text-align: left; background: #F8F9FA; color: #343A40; border: 1px solid #E6E6EA;">"She leads the team well. Her reports are always on time. See further above."</div>
+        <div class="fbm-split-arrow">↓</div>
+        <div class="fbm-split-sent fbm-kept fbm-result"><span class="fbm-split-icon">✓</span>She leads the team well.</div>
+        <div class="fbm-split-sent fbm-kept fbm-result"><span class="fbm-split-icon">✓</span>Her reports are always on time.</div>
+        <div class="fbm-split-sent fbm-dropped fbm-result"><span class="fbm-split-icon">✕</span>See further above.<span class="fbm-split-tag">too short</span></div>
+        <div class="fbm-split-arrow">↓</div>
+        <div class="fbm-split-entry fbm-result"><strong>≈ 170,000 sentences</strong> in total</div>
+      </div>
+    </div>
+
+    <div class="fbm-panel">
+      <p class="fbm-step-title">Step 3 · Measure the sentiment</p>
+      <p class="fbm-text">A language model (<a href="https://huggingface.co/cardiffnlp/twitter-roberta-base-sentiment-latest" target="_blank"><strong>RoBERTa</strong></a>) reads each sentence and gives three scores: how likely it is to be positive, neutral or negative.</p>
+      <div class="fbm-sent">
+        <div class="fbm-example fbm-result">"She has grown a lot as a project lead this year."</div>
+        <div class="fbm-scores">
+          <span class="fbm-score fbm-score-pos">positive 0.97</span><span class="fbm-score">neutral 0.03</span><span class="fbm-score">negative 0.00</span>
+        </div>
+        <div class="fbm-example fbm-result">"Your updates to the team are often late."</div>
+        <div class="fbm-scores">
+          <span class="fbm-score">positive 0.02</span><span class="fbm-score">neutral 0.27</span><span class="fbm-score fbm-score-neg">negative 0.71</span>
+        </div>
+      </div>
+      <p class="fbm-text" style="margin-top: 0.9rem;">The model was not trained on workplace feedback, so it was tested first. On 198 test sentences, the model and a researcher gave the same label 90% of the time.</p>
     </div>
 
     <div class="fbm-panel">
       <p class="fbm-step-title">Step 4 · One score per feedback entry</p>
-      <p class="fbm-text">For each sentence, the sentiment score is the chance it is positive minus the chance it is negative (from −1 to +1). These are averaged per feedback entry.</p>
+      <p class="fbm-text">Each sentence gets one sentiment score: the positive score minus the negative score. Scores range from −1 (very negative) to +1 (very positive).</p>
       <div class="fbm-example">
-        0.92 − 0.01 <span class="fbm-arrow">→</span> sentiment score <strong>+0.91</strong>
+        <span class="fbm-label">Positive example</span>
+        0.97 − 0.00 <span class="fbm-arrow">→</span> <strong>+0.97</strong>
       </div>
+      <div class="fbm-example">
+        <span class="fbm-label">Negative example</span>
+        0.02 − 0.71 <span class="fbm-arrow">→</span> <strong>−0.69</strong>
+      </div>
+      <p class="fbm-text">The scores of all sentences in an entry are then averaged, giving one score per entry.</p>
     </div>
 
     <div class="fbm-panel">
-      <p class="fbm-step-title">Step 5 · Link to the performance rating</p>
-      <p class="fbm-text">For about 19,000 entries, the manager also gave a numerical rating (1 to 4). The analysis tests whether more positive feedback goes together with a higher rating, and whether that link differs for women and men.</p>
+      <p class="fbm-step-title">Step 5 · Add the performance ratings</p>
+      <p class="fbm-text">Besides the written feedback, managers can give a performance rating from 1 to 4. About 19,000 entries have both.</p>
+      <div class="fbm-scores" style="justify-content: center; margin: 0.6rem 0 0.9rem;">
+        <span class="fbm-score">1 · lowest</span><span class="fbm-score">2</span><span class="fbm-score">3</span><span class="fbm-score">4 · highest</span>
+      </div>
+      <p class="fbm-text">This shows whether more positive feedback goes together with a higher rating.</p>
     </div>
 
     <div class="fbm-panel">
       <p class="fbm-step-title">Step 6 · Result</p>
-      <div class="placeholder-chart">Chart: sentiment score by performance rating, for women and men</div>
+      <div class="fbm-example fbm-result">
+        <span class="fbm-label">1 · Sentiment</span>
+        Feedback to women is slightly more positive than feedback to men.<br>
+        <strong>Sentiment score:</strong> lower for men (β = −0.10, 95% CI [−0.12, −0.07])
+      </div>
+      <div class="fbm-example fbm-result">
+        <span class="fbm-label">2 · Sentiment and rating</span>
+        For both women and men, more positive feedback goes with a higher rating, but the link is weaker for women.<br>
+        <strong>Link with rating:</strong> stronger for men (β = 0.03, 95% CI [0.01, 0.06])
+      </div>
+      <p class="fbm-text">Both differences are small.</p>
     </div>
 
   </div>
@@ -289,7 +331,7 @@ For women, the tone of feedback says less about how they were rated.
   <div class="fbm-slider">
     <input type="range" min="1" max="6" step="1" value="1" aria-label="Method step">
     <div class="fbm-labels">
-      <span>Sentences</span><span>Sentiment</span><span>Check</span><span>Score</span><span>Ratings</span><span>Result</span>
+      <span>Feedback</span><span>Sentences</span><span>Sentiment</span><span>Score</span><span>Ratings</span><span>Result</span>
     </div>
   </div>
 </div>
@@ -403,6 +445,15 @@ Female managers write longer and warmer feedback, especially at first
     const panels = root.querySelectorAll('.fbm-panel');
     const slider = root.querySelector('input[type=range]');
     const labels = root.querySelectorAll('.fbm-labels span');
+    // Tell the CSS how many labels there are, so each label gets an equal share of space
+    const labelRow = root.querySelector('.fbm-labels');
+    if (labelRow) labelRow.style.setProperty('--n', labels.length);
+    // Place each middle label so its centre sits under its slider stop
+    labels.forEach(function (l, i) {
+      if (i === 0 || i === labels.length - 1) return;
+      const f = i / (labels.length - 1);
+      l.style.left = 'calc(8px + ' + f + ' * (100% - 16px))';
+    });
     function show(n) {
       panels.forEach(function (p, i) { p.style.display = (i === n - 1) ? 'block' : 'none'; });
       labels.forEach(function (l, i) { l.classList.toggle('active', i === n - 1); });

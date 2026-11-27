@@ -73,26 +73,21 @@ dict(icon="cpu", color="#9A36B2", value="Tech (49%)")
 ::: {.card .spacer width="10%"}
 :::
 
-## About {height=700px}
+## About {height=400px}
 
 ::: {.card .spacer width="25%"}
 :::
 
 ::: {.card title="About this study" width="50%"}
 
-I examined whether women and men are described differently in workplace feedback. This page shows one study where I used natural language processing (NLP) to analyse developmental feedback entries managers submitted through Culture Amp’s platform.
+Do managers describe women and men differently? I used natural language processing to analyse their feedback on employee development. I did this in a research partnership with [Culture Amp](https://www.cultureamp.com/){target="_blank"}, a company that provides employee feedback and engagement software.
 
-**Methods**
+**Methods:** natural language processing (NLP), large language models (LLMs), transformer models, embeddings, sentiment analysis, text classification, text clustering, text analytics, model evaluation, data cleaning, statistical modelling (mixed-effects and longitudinal models)
 
-- **Agentic and communal language:** A language model (BERT) turned each mention of the employee into a numerical representation of how they were described in that sentence (a contextual embedding), and measured how close it was to the same kind of representation for agentic traits (such as “ambitious”) and communal traits (such as “supportive”).
-- **Distinctive words:** Identified which adjectives appeared more often in feedback to women compared to men, using a statistical method that accounts for how common each word is (weighted log-odds).
-- **Sentiment:** Classified how positive or negative each sentence was, using a language model (RoBERTa) that agreed with human coders 90% of the time.
-- **Hedging:** Detected uncertain wording, such as "maybe" or "I think", using a language model trained to recognise hedges (HedgeHog).
-- **Statistics:** Multilevel models to compare feedback by employee and manager gender, and longitudinal models to track changes across review cycles.
+**Tools:** Python, Hugging Face Transformers (BERT, RoBERTa, GoEmotions), Sentence Transformers, spaCy, NLTK, Gemini, Jupyter, AWS, Saturn Cloud
 
-**Credits**
+**Credits:** PhD research at the [University of Melbourne](https://www.unimelb.edu.au/){target="_blank"}, in a research partnership with [Culture Amp](https://www.cultureamp.com/){target="_blank"}. Co-supervised by the University of Melbourne ([Computing and Information Systems](https://cis.unimelb.edu.au/){target="_blank"}) and [UC Berkeley Haas](https://haas.berkeley.edu/){target="_blank"}.
 
-- PhD research at the [University of Melbourne](https://www.unimelb.edu.au/){target="_blank"}, in a research partnership with [Culture Amp](https://www.cultureamp.com/){target="_blank"}. Co-supervised by the University of Melbourne ([Computing and Information Systems](https://cis.unimelb.edu.au/){target="_blank"}) and [UC Berkeley Haas](https://haas.berkeley.edu/){target="_blank"}.
 :::
 
 ::: {.card .spacer width="25%"}
