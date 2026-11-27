@@ -168,7 +168,7 @@ ul.task-list li input[type="checkbox"] {
 <!-- margin-sidebar -->
 <!-- main -->
 
-<div class="bslib-grid-item html-fill-item bslib-grid" data-layout="flow" style="display: grid; grid-template-rows: 180px 650px 450px 700px 100px; grid-auto-columns: minmax(0, 1fr);">
+<div class="bslib-grid-item html-fill-item bslib-grid" data-layout="flow" style="display: grid; grid-template-rows: 180px 650px 450px 400px 100px; grid-auto-columns: minmax(0, 1fr);">
 <div class="bslib-grid" style="display: grid; grid-template-columns: minmax(3em, 1fr) minmax(3em, 1fr) minmax(3em, 1fr) minmax(3em, 1fr);
 grid-auto-rows: minmax(0, 1fr);">
 <div class="card valuebox cell bslib-card html-fill-container bslib-value-box showcase-left-center" data-bslib-card-init="" data-require-bs-caller="card()" style=" background: #9A36B2;">
@@ -337,7 +337,7 @@ Results
         <strong>Net communion:</strong> lower for men (β = −0.19, 95% CI [−0.21, −0.16])
       </div>
       <p class="fbm-text">The differences are small, hold for gender-neutral mentions, and do not depend on the manager's gender.</p>
-      <p class="fbm-note">"Positive" and "negative" refer to closeness to positive or negative traits, not to praise or criticism..</p>
+      <p class="fbm-note">"Positive" and "negative" refer to closeness to positive or negative traits, not to praise or criticism.</p>
     </div>
 
   </div>
@@ -345,7 +345,7 @@ Results
   <div class="fbm-slider html-fill-item html-fill-container">
     <input type="range" min="1" max="6" step="1" value="1" aria-label="Method step">
     <div class="fbm-labels html-fill-item html-fill-container">
-      <span>Traits</span><span>Reference points</span><span>Mentions</span><span>Net scores</span><span>Gender differences</span><span>Result</span>
+      <span>Traits</span><span>Reference points</span><span>Mentions</span><span>Net scores</span><span>Analysis</span><span>Result</span>
     </div>
   </div>
 </div>
@@ -483,47 +483,89 @@ Results
 </div>
 <div class="fbr-step html-fill-item html-fill-container">
 <div class="fbr-title html-fill-item html-fill-container">
-<p>For women, the tone of feedback says less about how they were rated.</p>
+<p>Women get kind words, but not always a high score</p>
 </div>
 <div class="fbm html-fill-item html-fill-container">
   <div class="fbm-panels html-fill-item html-fill-container">
 
     <div class="fbm-panel html-fill-item html-fill-container">
-      <p class="fbm-step-title">Step 1 · Split into sentences</p>
-      <p class="fbm-text">Each piece of feedback is split into sentences, and very short sentences (fewer than five words) are left out. This gives about 170,000 sentences.</p>
-    </div>
-
-    <div class="fbm-panel html-fill-item html-fill-container">
-      <p class="fbm-step-title">Step 2 · Measure the sentiment</p>
-      <p class="fbm-text">A language model trained for sentiment (RoBERTa) reads each sentence and estimates how likely it is to be positive, neutral or negative.</p>
-      <div class="fbm-example html-fill-item html-fill-container">
-        "She has made great progress this year."<br>
-        <span class="fbm-arrow">→</span> positive 0.92 · neutral 0.07 · negative 0.01
+      <p class="fbm-step-title">Step 1 · Prepare the feedback</p>
+      <p class="fbm-text">We use feedback on the employee's development and remove someentries.</p>
+      <div class="fbm-flow html-fill-item html-fill-container" style="margin-top: 1rem;">
+        <div class="fbm-flow-step fbm-result html-fill-item html-fill-container">≈ 59,000 feedback entries</div>
+        <div class="fbm-flow-step fbm-flow-out fbm-result html-fill-item html-fill-container"><span class="fbm-split-icon">✕</span> Non-English entries</div>
+        <div class="fbm-flow-step fbm-flow-out fbm-result html-fill-item html-fill-container"><span class="fbm-split-icon">✕</span> Gender unknown or non-binary</div>
+        <div class="fbm-flow-step fbm-flow-out fbm-result html-fill-item html-fill-container"><span class="fbm-split-icon">✕</span> No mention of the employee</div>
+        <div class="fbm-flow-step fbm-flow-main fbm-result html-fill-item html-fill-container">≈ 35,000 feedback entries</div>
       </div>
-      <p class="fbm-note">Example sentence and scores, not from the data.</p>
     </div>
 
     <div class="fbm-panel html-fill-item html-fill-container">
-      <p class="fbm-step-title">Step 3 · Check the model</p>
-      <p class="fbm-text">The model was not trained on workplace feedback, so it was tested first: on 198 sentences coded by hand, it agreed with the human coder 90% of the time.</p>
+      <p class="fbm-step-title">Step 2 · Break into sentences</p>
+      <p class="fbm-text">Each entry is split into sentences, and sentences with fewer than five words are left out.</p>
+      <div class="fbm-split html-fill-item html-fill-container">
+        <div class="fbm-split-entry fbm-result html-fill-item html-fill-container" style="text-align: left; background: #F8F9FA; color: #343A40; border: 1px solid #E6E6EA;">"She leads the team well. Her reports are always on time. See further above."</div>
+        <div class="fbm-split-arrow html-fill-item html-fill-container">↓</div>
+        <div class="fbm-split-sent fbm-kept fbm-result html-fill-item html-fill-container"><span class="fbm-split-icon">✓</span>She leads the team well.</div>
+        <div class="fbm-split-sent fbm-kept fbm-result html-fill-item html-fill-container"><span class="fbm-split-icon">✓</span>Her reports are always on time.</div>
+        <div class="fbm-split-sent fbm-dropped fbm-result html-fill-item html-fill-container"><span class="fbm-split-icon">✕</span>See further above.<span class="fbm-split-tag">too short</span></div>
+        <div class="fbm-split-arrow html-fill-item html-fill-container">↓</div>
+        <div class="fbm-split-entry fbm-result html-fill-item html-fill-container"><strong>≈ 170,000 sentences</strong> in total</div>
+      </div>
+    </div>
+
+    <div class="fbm-panel html-fill-item html-fill-container">
+      <p class="fbm-step-title">Step 3 · Measure the sentiment</p>
+      <p class="fbm-text">A language model (<a href="https://huggingface.co/cardiffnlp/twitter-roberta-base-sentiment-latest" target="_blank"><strong>RoBERTa</strong></a>) reads each sentence and gives three scores: how likely it is to be positive, neutral or negative.</p>
+      <div class="fbm-sent html-fill-item html-fill-container">
+        <div class="fbm-example fbm-result html-fill-item html-fill-container">"She has grown a lot as a project lead this year."</div>
+        <div class="fbm-scores html-fill-item html-fill-container">
+          <span class="fbm-score fbm-score-pos">positive 0.97</span><span class="fbm-score">neutral 0.03</span><span class="fbm-score">negative 0.00</span>
+        </div>
+        <div class="fbm-example fbm-result html-fill-item html-fill-container">"Your updates to the team are often late."</div>
+        <div class="fbm-scores html-fill-item html-fill-container">
+          <span class="fbm-score">positive 0.02</span><span class="fbm-score">neutral 0.27</span><span class="fbm-score fbm-score-neg">negative 0.71</span>
+        </div>
+      </div>
+      <p class="fbm-text" style="margin-top: 0.9rem;">The model was not trained on workplace feedback, so it was tested first. On 198 test sentences, the model and a researcher gave the same label 90% of the time.</p>
     </div>
 
     <div class="fbm-panel html-fill-item html-fill-container">
       <p class="fbm-step-title">Step 4 · One score per feedback entry</p>
-      <p class="fbm-text">For each sentence, the sentiment score is the chance it is positive minus the chance it is negative (from −1 to +1). These are averaged per feedback entry.</p>
+      <p class="fbm-text">Each sentence gets one sentiment score: the positive score minus the negative score. Scores range from −1 (very negative) to +1 (very positive).</p>
       <div class="fbm-example html-fill-item html-fill-container">
-        0.92 − 0.01 <span class="fbm-arrow">→</span> sentiment score <strong>+0.91</strong>
+        <span class="fbm-label">Positive example</span>
+        0.97 − 0.00 <span class="fbm-arrow">→</span> <strong>+0.97</strong>
       </div>
+      <div class="fbm-example html-fill-item html-fill-container">
+        <span class="fbm-label">Negative example</span>
+        0.02 − 0.71 <span class="fbm-arrow">→</span> <strong>−0.69</strong>
+      </div>
+      <p class="fbm-text">The scores of all sentences in an entry are then averaged, giving one score per entry.</p>
     </div>
 
     <div class="fbm-panel html-fill-item html-fill-container">
-      <p class="fbm-step-title">Step 5 · Link to the performance rating</p>
-      <p class="fbm-text">For about 19,000 entries, the manager also gave a numerical rating (1 to 4). The analysis tests whether more positive feedback goes together with a higher rating, and whether that link differs for women and men.</p>
+      <p class="fbm-step-title">Step 5 · Add the performance ratings</p>
+      <p class="fbm-text">Besides the written feedback, managers can give a performance rating from 1 to 4. About 19,000 entries have both.</p>
+      <div class="fbm-scores html-fill-item html-fill-container" style="justify-content: center; margin: 0.6rem 0 0.9rem;">
+        <span class="fbm-score">1 · lowest</span><span class="fbm-score">2</span><span class="fbm-score">3</span><span class="fbm-score">4 · highest</span>
+      </div>
+      <p class="fbm-text">This shows whether more positive feedback goes together with a higher rating.</p>
     </div>
 
     <div class="fbm-panel html-fill-item html-fill-container">
       <p class="fbm-step-title">Step 6 · Result</p>
-      <div class="placeholder-chart html-fill-item html-fill-container">Chart: sentiment score by performance rating, for women and men</div>
+      <div class="fbm-example fbm-result html-fill-item html-fill-container">
+        <span class="fbm-label">1 · Sentiment</span>
+        Feedback to women is slightly more positive than feedback to men.<br>
+        <strong>Sentiment score:</strong> lower for men (β = −0.10, 95% CI [−0.12, −0.07])
+      </div>
+      <div class="fbm-example fbm-result html-fill-item html-fill-container">
+        <span class="fbm-label">2 · Sentiment and rating</span>
+        For both women and men, more positive feedback goes with a higher rating, but the link is weaker for women.<br>
+        <strong>Link with rating:</strong> stronger for men (β = 0.03, 95% CI [0.01, 0.06])
+      </div>
+      <p class="fbm-text">Both differences are small.</p>
     </div>
 
   </div>
@@ -531,7 +573,7 @@ Results
   <div class="fbm-slider html-fill-item html-fill-container">
     <input type="range" min="1" max="6" step="1" value="1" aria-label="Method step">
     <div class="fbm-labels html-fill-item html-fill-container">
-      <span>Sentences</span><span>Sentiment</span><span>Check</span><span>Score</span><span>Ratings</span><span>Result</span>
+      <span>Feedback</span><span>Sentences</span><span>Sentiment</span><span>Score</span><span>Ratings</span><span>Result</span>
     </div>
   </div>
 </div>
@@ -636,6 +678,15 @@ Results
     const panels = root.querySelectorAll('.fbm-panel');
     const slider = root.querySelector('input[type=range]');
     const labels = root.querySelectorAll('.fbm-labels span');
+    // Tell the CSS how many labels there are, so each label gets an equal share of space
+    const labelRow = root.querySelector('.fbm-labels');
+    if (labelRow) labelRow.style.setProperty('--n', labels.length);
+    // Place each middle label so its centre sits under its slider stop
+    labels.forEach(function (l, i) {
+      if (i === 0 || i === labels.length - 1) return;
+      const f = i / (labels.length - 1);
+      l.style.left = 'calc(8px + ' + f + ' * (100% - 16px))';
+    });
     function show(n) {
       panels.forEach(function (p, i) { p.style.display = (i === n - 1) ? 'block' : 'none'; });
       labels.forEach(function (l, i) { l.classList.toggle('active', i === n - 1); });
@@ -1197,19 +1248,10 @@ grid-auto-rows: minmax(0, 1fr);">
 About this study
 </span></div></div>
 <div class="card-body html-fill-item html-fill-container">
-<p>I examined whether women and men are described differently in workplace feedback. This page shows one study where I used natural language processing (NLP) to analyse developmental feedback entries managers submitted through Culture Amp’s platform.</p>
-<strong>Methods</strong>
-<ul>
-<li><strong>Agentic and communal language:</strong> A language model (BERT) turned each mention of the employee into a numerical representation of how they were described in that sentence (a contextual embedding), and measured how close it was to the same kind of representation for agentic traits (such as “ambitious”) and communal traits (such as “supportive”).</li>
-<li><strong>Distinctive words:</strong> Identified which adjectives appeared more often in feedback to women compared to men, using a statistical method that accounts for how common each word is (weighted log-odds).</li>
-<li><strong>Sentiment:</strong> Classified how positive or negative each sentence was, using a language model (RoBERTa) that agreed with human coders 90% of the time.</li>
-<li><strong>Hedging:</strong> Detected uncertain wording, such as “maybe” or “I think”, using a language model trained to recognise hedges (HedgeHog).</li>
-<li><strong>Statistics:</strong> Multilevel models to compare feedback by employee and manager gender, and longitudinal models to track changes across review cycles.</li>
-</ul>
-<strong>Credits</strong>
-<ul>
-<li>PhD research at the <a href="https://www.unimelb.edu.au/" target="_blank">University of Melbourne</a>, in a research partnership with <a href="https://www.cultureamp.com/" target="_blank">Culture Amp</a>. Co-supervised by the University of Melbourne (<a href="https://cis.unimelb.edu.au/" target="_blank">Computing and Information Systems</a>) and <a href="https://haas.berkeley.edu/" target="_blank">UC Berkeley Haas</a>.</li>
-</ul>
+<p>Do managers describe women and men differently? I used natural language processing to analyse their feedback on employee development. I did this in a research partnership with <a href="https://www.cultureamp.com/" target="_blank">Culture Amp</a>, a company that provides employee feedback and engagement software.</p>
+<p><strong>Methods:</strong> natural language processing (NLP), large language models (LLMs), transformer models, embeddings, sentiment analysis, text classification, text clustering, text analytics, model evaluation, data cleaning, statistical modelling (mixed-effects and longitudinal models)</p>
+<p><strong>Tools:</strong> Python, Hugging Face Transformers (BERT, RoBERTa, GoEmotions), Sentence Transformers, spaCy, NLTK, Gemini, Jupyter, AWS, Saturn Cloud</p>
+<p><strong>Credits:</strong> PhD research at the <a href="https://www.unimelb.edu.au/" target="_blank">University of Melbourne</a>, in a research partnership with <a href="https://www.cultureamp.com/" target="_blank">Culture Amp</a>. Co-supervised by the University of Melbourne (<a href="https://cis.unimelb.edu.au/" target="_blank">Computing and Information Systems</a>) and <a href="https://haas.berkeley.edu/" target="_blank">UC Berkeley Haas</a>.</p>
 </div>
 <bslib-tooltip placement="auto" bsoptions="[]" data-require-bs-version="5" data-require-bs-caller="tooltip()">
     <template>Expand</template>
